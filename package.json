@@ -24,6 +24,7 @@
     "license": "ISC",
     "dependencies": {
         "@zeit/next-sass": "^1.0.1",
+        "babel-plugin-styled-components": "^1.10.6",
         "dotenv": "^8.0.0",
         "firebase": "^6.0.4",
         "firebase-admin": "^8.0.0",
@@ -44,7 +45,8 @@
         "recompose": "^0.30.0",
         "redux": "^4.0.1",
         "redux-devtools-extension": "^2.13.8",
-        "redux-thunk": "^2.3.0"
+        "redux-thunk": "^2.3.0",
+        "styled-components": "^4.3.2"
     },
     "devDependencies": {
         "@babel/cli": "^7.4.4",
