@@ -1,5 +1,6 @@
 import React from 'react'
 import App, { Container } from 'next/app'
+import Head from 'next/head'
 import { Provider } from 'react-redux'
 import withRedux from 'next-redux-wrapper'
 import createStore from '../lib/store'
@@ -11,7 +12,12 @@ class MyApp extends App {
         return (
                 <Container>
                     <Provider store={store}>
-                        <Component {...pageProps} />
+                        <>
+                            <Head>
+                                <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+                            </Head>
+                            <Component {...pageProps} />
+                        </>
                     </Provider>
                 </Container>
         )
