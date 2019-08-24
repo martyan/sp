@@ -7,10 +7,7 @@ import { bindActionCreators } from 'redux'
 import { getTodos } from '../lib/todo/actions'
 import withAuthentication from '../lib/withAuthentication'
 import PageWrapper from '../components/PageWrapper'
-import Header from '../components/Header'
-import AddTodo from '../components/todo/AddTodo'
-import TodoList from '../components/todo/TodoList'
-import Footer from '../components/Footer'
+import Map from '../components/Map'
 import './index.scss'
 
 class Home extends React.Component {
@@ -36,13 +33,7 @@ class Home extends React.Component {
                         <title>Todo list | Nextbase</title>
                     </Head>
 
-                    <Header />
-
-                    <AddTodo />
-
-                    <TodoList />
-
-                    <Footer />
+                    <Map />
 
                 </div>
             </PageWrapper>
