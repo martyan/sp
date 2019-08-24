@@ -25,7 +25,7 @@ const GAWrapper = (WrappedComponent) => (
         }
 
         initGa = () => {
-            if(!window.GA_INITIALIZED) {
+            if(!window.GA_INITIALIZED && process.env.NODE_ENV === 'production') {
                 ReactGA.initialize(process.env.GOOGLE_ANALYTICS_ID, { debug })
                 window.GA_INITIALIZED = true
             }
