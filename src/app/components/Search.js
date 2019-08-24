@@ -17,7 +17,7 @@ const Search = ({ maps }) => {
     })
 
     return (
-        <input type="text" ref={inputRef} />
+        <input type="text" ref={inputRef} placeholder="Search" />
     )
 
 }

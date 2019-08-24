@@ -35,31 +35,46 @@ const Marker = styled.div`
     height: 48px;
 `
 
-const Done = styled.button`
+const Button = styled.button`
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    line-height: 40px;
+    border: 0;
+    border-radius: 50%;
+    background: #444;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+`
+
+const Done = styled(Button)`
     position: absolute;
     top: 10px;
     right: 10px;
     z-index: 99;
-    background: indianred;
-    padding: 10px;
-    color: white;
-    font-weight: bold;
-    border: 0;
-    border-radius: 50%;
 `
 
-const Geolocation = styled.button`
+const Redo = styled(Button)`
     position: absolute;
-    bottom: 62px;
+    top: 10px;
+    right: 60px;
+    z-index: 99;
+`
+
+const MapType = styled(Button)`
+    position: absolute;
+    bottom: 110px;
     right: 10px;
     z-index: 99;
-    width: 42px;
-    height: 42px;
-    background: indianred;
-    color: white;
-    font-size: 1.6em;
-    border: none;
-    border-radius: 50%;
+`
+
+const Geolocation = styled(Button)`
+    position: absolute;
+    bottom: 60px;
+    right: 10px;
+    z-index: 99;
+    font-size: 1.3em;
 `
 
 const StyledSearch = styled.div`
@@ -69,14 +84,19 @@ const StyledSearch = styled.div`
     bottom: 10px;
     right: 10px;
     z-index: 99;
-    min-width: 42px;
-    height: 42px;
-    background: indianred;
+    background: #444;
     border: none;
-    border-radius: 50%;
-
-    button {
+    border-radius: 20px;
+    
+    input {
+        border: none;
+        background: transparent;
         color: white;
+        padding: 5px 15px;
+        
+        &::placeholder {
+            color: rgba(255,255,255, .8)
+        }
     }
 `
 
@@ -94,19 +114,24 @@ const marker = <svg height="48px" viewBox="0 0 48 48"><path clipRule="evenodd" d
 // )
 
 const Map = () => {
+    const defaultCenter = {lat: 49.20724370019872, lng: 16.593615532609107}
+    const defaultZoom = 3
+
     const [ googleMaps, setGoogleMaps ] = useState(null)
-    const [ mapCenter, setMapCenter ] = useState({lat: 59.95, lng: 30.33})
+    const [ mapCenter, setMapCenter ] = useState({...defaultCenter})
     const [ markerCoords, setMarkerCoords ] = useState(null)
     const [ searchCollapsed, setSearchCollapsed ] = useState(true)
-    const [ zoom, setZoom ] = useState(1)
-    const [ zoomMarkerPlaced, setZoomMarkerPlaced ] = useState(0)
+    const [ zoom, setZoom ] = useState(defaultZoom)
+    const [ mapTypeId, setMapTypeId ] = useState('roadmap')
     const [ geoAccuracy, setGeoAccuracy ] = useState(null)
     const [ reviewing, setReviewing ] = useState(false)
 
     const createMapOptions = (maps) => {
         return {
             disableDefaultUI: true,
-            gestureHandling: 'greedy',
+            gestureHandling: !reviewing ? 'greedy' : 'none',
+            mapTypeId,
+            minZoom: 2,
             // panControl: false,
             // mapTypeControl: true,
             // scrollwheel: false,
@@ -123,34 +148,34 @@ const Map = () => {
 
         const firstMatch = results[0]
 
-        console.log(results[0])
-
         const location = {
             city: '',
             country: '',
             address: firstMatch['formatted_address']
         }
 
-        firstMatch['address_components'].filter(obj => {
-            if(obj.types.indexOf('locality') > -1) {
-                location.city = obj.long_name
-            }
-        })
+        const locality = firstMatch['address_components'].find(addr => addr.types.indexOf('locality') > -1)
+        const political = firstMatch['address_components'].find(addr => addr.types.indexOf('political') > -1)
+        const country = firstMatch['address_components'].find(addr => addr.types.indexOf('country') > -1)
 
-        firstMatch['address_components'].filter(obj => {
-            if(obj.types.indexOf('country') > -1) {
-                location.country = obj.long_name
-            }
-        })
+        const getLongName = (addr) => addr.long_name || ''
+
+        location.city = locality ? getLongName(locality) : getLongName(political)
+        location.country = getLongName(country)
 
         return location
     }
 
     const placeMarker = () => {
         setMarkerCoords(mapCenter)
-        setReviewing(true)
+
+        console.log(mapCenter)
+
         geocode()
-            .then(console.log)
+            .then(() => {
+                if(zoom < 14) setZoom(14)
+                setReviewing(true)
+            })
             .catch(console.error)
     }
 
@@ -166,7 +191,7 @@ const Map = () => {
     const geolocate = () => {
         if(!navigator.geolocation) return
 
-        navigator.geolocation.getCurrentPosition(handleGeolocationSuccess, console.log)
+        navigator.geolocation.getCurrentPosition(handleGeolocationSuccess, console.error)
     }
 
     const handleMapChange = (mapOptions) => {
@@ -174,27 +199,52 @@ const Map = () => {
         setZoom(mapOptions.zoom)
     }
 
-    console.log(googleMaps)
-    console.log(process.env.NODE_ENV)
+    const toggleMapType = () => {
+        setMapTypeId(mapTypeId === 'roadmap' ? 'hybrid' : 'roadmap')
+    }
+
+    const userHasMovedMap = () => {
+        return (
+            mapCenter.lat !== defaultCenter.lat ||
+            mapCenter.lng !== defaultCenter.lng ||
+            zoom !== defaultZoom
+        )
+    }
 
     return (
         <MapWrapper>
             <Crosshair visible={!reviewing} />
 
-            <Geolocation onClick={geolocate}>
-                <i className="fa fa-crosshairs"></i>
-            </Geolocation>
+            {userHasMovedMap() && (
+                <Done onClick={placeMarker}>
+                    <i className="fa fa-check"></i>
+                </Done>
+            )}
 
-            <StyledSearch>
-                {!searchCollapsed && <Search maps={googleMaps.maps} />}
-                <button onClick={() => setSearchCollapsed(!searchCollapsed)}><i className="fa fa-search"></i></button>
-            </StyledSearch>
+            {reviewing ? (
+                <>
+                    <Redo onClick={() => setReviewing(false)}>
+                        <i className="fa fa-repeat"></i>
+                    </Redo>
+                </>
+            ) : (
+                <>
+                    <MapType onClick={toggleMapType}>
+                        <i className={mapTypeId === 'roadmap' ? 'fa fa-map-o' : 'fa fa-globe'}></i>
+                    </MapType>
+                    <Geolocation onClick={geolocate}>
+                        <i className="fa fa-crosshairs"></i>
+                    </Geolocation>
+                    <StyledSearch>
+                        {!searchCollapsed && <Search maps={googleMaps.maps} />}
+                        <Button onClick={() => setSearchCollapsed(!searchCollapsed)}>
+                            <i className="fa fa-search"></i>
+                        </Button>
+                    </StyledSearch>
+                </>
+            )}
 
-            <Done onClick={placeMarker}>
-                <i className="fa fa-check"></i>
-            </Done>
-
-            <div style={{ height: '100vh', width: '100%' }}>
+            <div style={{ height: '100%', width: '100%' }}>
                 <GoogleMapReact
                     bootstrapURLKeys={{ key: process.env.GOOGLE_MAPS_API_KEY, libraries: ['places'] }}
                     center={{lat: mapCenter.lat, lng: mapCenter.lng}}
@@ -205,7 +255,7 @@ const Map = () => {
                     yesIWantToUseGoogleMapApiInternals
                     onGoogleApiLoaded={setGoogleMaps}
                 >
-                    {markerCoords && (
+                    {(markerCoords && reviewing) && (
                         <Marker
                             className="marker"
                             lat={markerCoords.lat}
