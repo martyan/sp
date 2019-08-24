@@ -5,6 +5,12 @@ import crosshair from '../static/img/crosshair.svg'
 import styled from 'styled-components'
 import Search from './Search'
 
+const MapWrapper = styled.div`
+    position: relative;
+    height: 100vh; /* Use vh as a fallback for browsers that do not support Custom Properties */
+    height: calc(var(--vh, 1vh) * 100);
+`
+
 const Crosshair = styled.div`
     pointer-events: none;
     background: url(${crosshair});
@@ -172,7 +178,7 @@ const Map = () => {
     console.log(process.env.NODE_ENV)
 
     return (
-        <div style={{position: 'relative'}}>
+        <MapWrapper>
             <Crosshair visible={!reviewing} />
 
             <Geolocation onClick={geolocate}>
@@ -210,7 +216,7 @@ const Map = () => {
                     )}
                 </GoogleMapReact>
             </div>
-        </div>
+        </MapWrapper>
     )
 }
 
