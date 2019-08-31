@@ -12,7 +12,6 @@ const Map = () => {
     const defaultCenter = {lat: 49.20724370019872, lng: 16.593615532609107}
     const defaultZoom = 3
 
-    const [ searchStr, setSearchStr ] = useState('')
     const [ googleMaps, setGoogleMaps ] = useState(null)
     const [ mapCenter, setMapCenter ] = useState({...defaultCenter})
     const [ markerCoords, setMarkerCoords ] = useState(null)
@@ -112,6 +111,11 @@ const Map = () => {
         )
     }
 
+    const handleAutocompleteSelect = ({ lat, lng, zoom }) => {
+        setZoom(zoom)
+        setMapCenter({lat, lng})
+    }
+
     const isInverse = mapTypeId === 'hybrid'
 
     return (
@@ -150,7 +154,14 @@ const Map = () => {
                     <Geolocation onClick={geolocate} disabled={isGeolocating} inverse={isInverse}>
                         <i className="fa fa-crosshairs"></i>
                     </Geolocation>
-                    {googleMaps && <Autocomplete value={searchStr} onChange={setSearchStr} maps={googleMaps.maps} />}
+                    {googleMaps && (
+                        <Autocomplete
+                            onPlaceSelect={handleAutocompleteSelect}
+                            maps={googleMaps.maps}
+                            map={googleMaps.map}
+                            inverse={isInverse}
+                        />
+                    )}
                 </>
             )}
 

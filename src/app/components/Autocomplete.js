@@ -1,26 +1,43 @@
 import React, { useEffect, useState, useRef } from 'react'
+import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import debounce from '../lib/helpers/debounce'
 import { Button } from './Map'
 import poweredByGoogle from '../static/img/powered_by_google.png'
+import poweredByGoogleInverse from '../static/img/powered_by_google_inverse.png'
 
-const Autocomplete = ({ maps, value, onChange }) => {
+const Autocomplete = ({ maps, map, onPlaceSelect, inverse }) => {
 
     const inputRef = useRef(null)
+    const [ searchStr, setSearchStr ] = useState('')
     const [ predictions, setPredictions ] = useState([])
     const [ activePrediction, setActivePrediction ] = useState(null)
     const [ isFocused, setIsFocused ] = useState(false)
 
-    let sessionToken
-    let autocompleteService
+    const sessionToken = useRef(null)
+    const sessionTokenCreated = useRef(null)
+    const autocompleteService = useRef(null)
+
+    const getNow = () => new Date().getTime()
+
+    const resetSessionToken = () => {
+        console.log('reset autocomplete session token')
+
+        sessionToken.current = new maps.places.AutocompleteSessionToken()
+        sessionTokenCreated.current = getNow()
+    }
 
     useEffect(() => {
-        sessionToken = new maps.places.AutocompleteSessionToken()
-        autocompleteService = new maps.places.AutocompleteService()
-    })
+        autocompleteService.current = new maps.places.AutocompleteService()
+    }, [])
 
     const getPredictions = (input) => {
-        autocompleteService.getPlacePredictions({input, sessionToken}, places => {
+        const placeOpts = {
+            input,
+            sessionToken: sessionToken.current
+        }
+
+        autocompleteService.current.getPlacePredictions(placeOpts, places => {
             if(places) {
                 setPredictions(places)
                 setActivePrediction(null)
@@ -29,7 +46,7 @@ const Autocomplete = ({ maps, value, onChange }) => {
     }
 
     const handleInputChange = (e) => {
-        onChange(e.target.value)
+        setSearchStr(e.target.value)
 
         if(e.target.value.length) getPredictions(e.target.value)
         else setPredictions([])
@@ -47,8 +64,23 @@ const Autocomplete = ({ maps, value, onChange }) => {
         else setActivePrediction(activePrediction === 0 ? predictions.length - 1 : activePrediction - 1)
     }
 
+    const handleInputFocus = () => {
+        setIsFocused(true)
+
+        const now = new Date().getTime()
+
+        if(now - sessionTokenCreated.current >= 180000) resetSessionToken()
+    }
+
+    const handleInputBlur = () => {
+        setTimeout(() => setIsFocused(false), 0)
+    }
+
     const handleInputKeyDown = (e) => {
-        console.log(e.key)
+        if(!isFocused) {
+            setIsFocused(true)
+            if(e.key === 'ArrowUp' || e.key === 'ArrowDown') return e.preventDefault()
+        }
 
         switch(e.key) {
             case 'ArrowUp':
@@ -59,6 +91,8 @@ const Autocomplete = ({ maps, value, onChange }) => {
                 return increaseActivePrediction()
             case 'Escape':
                 return inputRef.current.blur()
+            case 'Enter':
+                return getPlace()
         }
     }
 
@@ -66,26 +100,84 @@ const Autocomplete = ({ maps, value, onChange }) => {
         if(predictions.length > 0) {
             setPredictions([])
             setActivePrediction(null)
-            onChange('')
+            setSearchStr('')
         } else {
             inputRef.current.focus()
         }
     }
 
-    console.log(activePrediction)
-
     const reversedPredictions = [...predictions].reverse()
 
+    const getPlace = (preferredPrediction) => {
+        console.log(11)
+
+        if(!activePrediction && !preferredPrediction) return
+
+        const prediction = reversedPredictions[preferredPrediction || activePrediction]
+        console.log(prediction)
+
+        const request = {
+            placeId: prediction.place_id,
+            fields: ['geometry']
+        }
+
+        const service = new maps.places.PlacesService(map);
+        service.getDetails(request, (place, status) => {
+            if(status == maps.places.PlacesServiceStatus.OK) {
+                console.log(place)
+                const zoom = getBoundsZoomLevel(place.geometry.viewport, {width: map.getDiv().offsetWidth, height: map.getDiv().offsetHeight})
+                const lat = place.geometry.location.lat()
+                const lng = place.geometry.location.lng()
+                onPlaceSelect({lat, lng, zoom})
+                setIsFocused(false)
+                resetSessionToken()
+                inputRef.current.blur()
+                // map.fitBounds(place.geometry.viewport)
+            }
+        })
+    }
+
+    const getBoundsZoomLevel = (bounds, mapDim) => {
+        const WORLD_DIM = { height: 256, width: 256 }
+        const ZOOM_MAX = 21
+
+        const latRad = (lat) => {
+            const sin = Math.sin(lat * Math.PI / 180)
+            const radX2 = Math.log((1 + sin) / (1 - sin)) / 2
+            return Math.max(Math.min(radX2, Math.PI), -Math.PI) / 2
+        }
+
+        const zoom = (mapPx, worldPx, fraction) => {
+            return Math.floor(Math.log(mapPx / worldPx / fraction) / Math.LN2)
+        }
+
+        const ne = bounds.getNorthEast()
+        const sw = bounds.getSouthWest()
+
+        const latFraction = (latRad(ne.lat()) - latRad(sw.lat())) / Math.PI
+
+        const lngDiff = ne.lng() - sw.lng()
+        const lngFraction = ((lngDiff < 0) ? (lngDiff + 360) : lngDiff) / 360
+
+        const latZoom = zoom(mapDim.height, WORLD_DIM.height, latFraction)
+        const lngZoom = zoom(mapDim.width, WORLD_DIM.width, lngFraction)
+
+        return Math.min(latZoom, lngZoom, ZOOM_MAX)
+    }
+
     return (
-        <Wrapper large={isFocused}>
-            <Predictions>
+        <Wrapper large={isFocused} inverse={inverse}>
+            <Predictions collapsed={!isFocused} inverse={inverse}>
                 {(isFocused && predictions.length > 0) && (
                     <>
-                        <div className="powered"><img src={poweredByGoogle} alt="Powered by Google" /></div>
+                        <div className="powered">
+                            <img src={inverse ? poweredByGoogleInverse : poweredByGoogle} alt="Powered by Google" />
+                        </div>
                         {reversedPredictions.map((prediction, index) => (
                             <div
                                 key={prediction.id}
                                 className={activePrediction === index ? 'prediction active' : 'prediction'}
+                                onClick={() => getPlace(index)}
                             >
                                 {prediction.description}
                             </div>
@@ -93,20 +185,19 @@ const Autocomplete = ({ maps, value, onChange }) => {
                     </>
                 )}
             </Predictions>
-
             <label>
                 <input
-                    value={value}
+                    value={searchStr}
                     ref={inputRef}
                     type="text"
                     placeholder="Search"
                     onChange={handleInputChange}
                     onKeyDown={handleInputKeyDown}
-                    onFocus={e => setIsFocused(true)}
-                    onBlur={e => setIsFocused(false)}
+                    onFocus={handleInputFocus}
+                    onBlur={handleInputBlur}
                 />
-                <SearchBtn onClick={handleBtnClick}>
-                    {value.length === 0 ?
+                <SearchBtn onClick={handleBtnClick} inverse={inverse}>
+                    {searchStr.length === 0 ?
                         <i className="fa fa-search"></i> :
                         <i className="fa fa-times"></i>
                     }
@@ -115,6 +206,13 @@ const Autocomplete = ({ maps, value, onChange }) => {
         </Wrapper>
     )
 
+}
+
+Autocomplete.propTypes = {
+    maps: PropTypes.object,
+    map: PropTypes.object,
+    onPlaceSelect: PropTypes.func.isRequired,
+    inverse: PropTypes.bool.isRequired
 }
 
 export default Autocomplete
@@ -126,9 +224,9 @@ const Wrapper = styled.div`
     z-index: 99;
     width: calc(100% - 24px);
     max-width: ${({large}) => large ? '420px' : '160px'};
-    background: #444;
+    background: ${({inverse}) => inverse ? 'white' : '#444'};
     border: none;
-    border-radius: ${({large}) => large ? '6px' : '20px'};
+    border-radius: 20px;
     overflow: hidden;
     transition: .5s ease;
     
@@ -143,12 +241,14 @@ const Wrapper = styled.div`
         height: 42px;
         border: none;
         background: transparent;
-        color: white;
+        color: ${({inverse}) => inverse ? '#444' : 'white'};
         font-weight: 300;
         padding: 6px 18px;
+        transition: .2s ease;
 
         &::placeholder {
             color: rgba(255,255,255, .8);
+            color: ${({inverse}) => inverse ? 'rgba(44,44,44, .8)' : 'rgba(255,255,255, .8)'};
             font-weight: 300;
         }
     }
@@ -159,14 +259,23 @@ const SearchBtn = styled(props => <Button {...props} />)`
     bottom: 0;
     right: 0;
     z-index: 99;
+    background: transparent !important;
+    
+    i {
+        color: ${({inverse}) => inverse ? '#222' : 'white'};
+        transition: .2s ease;
+    }
 `
 
 const Predictions = styled.div`
     overflow: hidden;
+    max-height: ${({collapsed}) => collapsed ? '0' : '50vh'};
+    transition: .5s ease;
     
     .powered {
-        margin: 5px 7px 2px;
-        text-align: right;
+        padding: 3px;
+        text-align: center;
+        border-bottom: ${({inverse}) => inverse ? '1px solid rgba(0, 0, 0, .1)' : '1px solid rgba(255,255,255, .1)'};
         opacity: .8;
         
         img {
@@ -175,11 +284,11 @@ const Predictions = styled.div`
     }
     
     .prediction {
-        color: white;
+        color: ${({inverse}) => inverse ? 'rgba(0,0,0, .8)' : 'rgba(255,255,255, .8)'};
         padding: 10px 18px;
         font-weight: 300;
-        font-size: .95em;
-        border-bottom: 1px solid rgba(255,255,255, .1);
+        font-size: .94em;
+        border-bottom: ${({inverse}) => inverse ? '1px solid rgba(0, 0, 0, .1)' : '1px solid rgba(255,255,255, .1)'};
         transition: .2s ease;
         
         &:hover, &.active {
