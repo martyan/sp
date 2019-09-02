@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import debounce from '../lib/helpers/debounce'
+import useDebounce from '../lib/helpers/useDebounce'
 import { Button } from './Map'
 import poweredByGoogle from '../static/img/powered_by_google.png'
 import poweredByGoogleInverse from '../static/img/powered_by_google_inverse.png'
@@ -13,6 +14,7 @@ const Autocomplete = ({ maps, map, onPlaceSelect, inverse }) => {
     const [ predictions, setPredictions ] = useState([])
     const [ activePrediction, setActivePrediction ] = useState(null)
     const [ isFocused, setIsFocused ] = useState(false)
+    const debouncedSearchStr = useDebounce(searchStr, 200);
 
     const sessionToken = useRef(null)
     const sessionTokenCreated = useRef(null)
@@ -32,6 +34,8 @@ const Autocomplete = ({ maps, map, onPlaceSelect, inverse }) => {
     }, [])
 
     const getPredictions = (input) => {
+        console.log('get predictions')
+
         const placeOpts = {
             input,
             sessionToken: sessionToken.current
@@ -45,12 +49,10 @@ const Autocomplete = ({ maps, map, onPlaceSelect, inverse }) => {
         })
     }
 
-    const handleInputChange = (e) => {
-        setSearchStr(e.target.value)
-
-        if(e.target.value.length) getPredictions(e.target.value)
+    useEffect(() => {
+        if(debouncedSearchStr) getPredictions(debouncedSearchStr)
         else setPredictions([])
-    }
+    }, [debouncedSearchStr])
 
     const increaseActivePrediction = () => {
         if(predictions.length === 0) return
@@ -109,12 +111,10 @@ const Autocomplete = ({ maps, map, onPlaceSelect, inverse }) => {
     const reversedPredictions = [...predictions].reverse()
 
     const getPlace = (preferredPrediction) => {
-        console.log(11)
+        const predictionIndex = (typeof preferredPrediction === 'undefined') ? activePrediction : preferredPrediction
+        if(!Number.isInteger(predictionIndex)) return
 
-        if(!activePrediction && !preferredPrediction) return
-
-        const prediction = reversedPredictions[preferredPrediction || activePrediction]
-        console.log(prediction)
+        const prediction = reversedPredictions[predictionIndex]
 
         const request = {
             placeId: prediction.place_id,
@@ -191,7 +191,7 @@ const Autocomplete = ({ maps, map, onPlaceSelect, inverse }) => {
                     ref={inputRef}
                     type="text"
                     placeholder="Search"
-                    onChange={handleInputChange}
+                    onChange={e => setSearchStr(e.target.value)}
                     onKeyDown={handleInputKeyDown}
                     onFocus={handleInputFocus}
                     onBlur={handleInputBlur}
