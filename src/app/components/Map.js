@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import GoogleMapReact from 'google-map-react'
 import axios from 'axios'
 import styled from 'styled-components'
@@ -21,6 +21,7 @@ const Map = () => {
     const [ reviewing, setReviewing ] = useState(false)
     const [ isGeolocating, setIsGeocolocating ] = useState(false)
     const [ location, setLocation ] = useState(null)
+    const [ autocompleteBlurSignal, setAutocompleteBlurSignal ] = useState(null)
 
     const createMapOptions = (maps) => {
         return {
@@ -160,6 +161,7 @@ const Map = () => {
                             maps={googleMaps.maps}
                             map={googleMaps.map}
                             inverse={isInverse}
+                            blurSignal={autocompleteBlurSignal}
                         />
                     )}
                 </>
@@ -175,6 +177,7 @@ const Map = () => {
                     options={createMapOptions}
                     yesIWantToUseGoogleMapApiInternals
                     onGoogleApiLoaded={setGoogleMaps}
+                    onClick={() => setAutocompleteBlurSignal(new Date().getTime())}
                 >
                     {(markerCoords && reviewing) && (
                         <Marker

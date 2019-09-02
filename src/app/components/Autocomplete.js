@@ -7,7 +7,7 @@ import { Button } from './Map'
 import poweredByGoogle from '../static/img/powered_by_google.png'
 import poweredByGoogleInverse from '../static/img/powered_by_google_inverse.png'
 
-const Autocomplete = ({ maps, map, onPlaceSelect, inverse }) => {
+const Autocomplete = ({ maps, map, onPlaceSelect, inverse, blurSignal }) => {
 
     const inputRef = useRef(null)
     const [ searchStr, setSearchStr ] = useState('')
@@ -20,6 +20,10 @@ const Autocomplete = ({ maps, map, onPlaceSelect, inverse }) => {
     const sessionTokenCreated = useRef(null)
     const autocompleteService = useRef(null)
 
+    useEffect(() => {
+        if(isFocused) inputRef.current.blur()
+    }, [blurSignal])
+
     const getNow = () => new Date().getTime()
 
     const resetSessionToken = () => {
@@ -28,10 +32,6 @@ const Autocomplete = ({ maps, map, onPlaceSelect, inverse }) => {
         sessionToken.current = new maps.places.AutocompleteSessionToken()
         sessionTokenCreated.current = getNow()
     }
-
-    useEffect(() => {
-        autocompleteService.current = new maps.places.AutocompleteService()
-    }, [])
 
     const getPredictions = (input) => {
         console.log('get predictions')
@@ -48,6 +48,10 @@ const Autocomplete = ({ maps, map, onPlaceSelect, inverse }) => {
             }
         })
     }
+
+    useEffect(() => {
+        autocompleteService.current = new maps.places.AutocompleteService()
+    }, [])
 
     useEffect(() => {
         if(debouncedSearchStr) getPredictions(debouncedSearchStr)
