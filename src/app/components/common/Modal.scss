@@ -8,10 +8,16 @@
         max-width: 420px;
         padding: 10px;
         border-radius: 3px;
-        overflow: hidden;
+        //overflow: hidden;
 
         @media (min-width: $tablet) {
             padding: 15px;
+        }
+
+        &.stretch {
+            width: auto;
+            max-width: 100%;
+            min-width: 280px;
         }
 
         &.no-padding {
@@ -38,6 +44,10 @@
 
         &.menu {
             align-items: flex-start;
+        }
+
+        &.no-padding {
+            padding: 0;
         }
 
     }
