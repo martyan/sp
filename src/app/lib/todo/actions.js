@@ -1,4 +1,4 @@
-import { db } from '../firebase'
+import { db, storage } from '../firebase'
 
 export const todoDeleted = (todoId) => ({ type: 'TODO_DELETED', todoId })
 
@@ -25,4 +25,19 @@ export const updateTodo = (todoId, todo) => ({
 export const deleteTodo = (todoId) => ({
     type: 'DELETE_TODO',
     payload: db.collection('todos').doc(todoId).delete()
+})
+
+export const uploadFile = (file, name, path) => ({
+    type: 'UPLOAD_FILE',
+    payload: new Promise((resolve, reject) => {
+        const storageRef = storage.ref()
+
+        const imageDir = storageRef.child(path)
+        const task = imageDir.put(file)
+
+        task.on('state_changed', snapshot => {
+            const progress = Math.ceil((snapshot.bytesTransferred / snapshot.totalBytes) * 100)
+            console.log(progress)
+        }, error => reject(error), () => resolve(task.snapshot))
+    })
 })
