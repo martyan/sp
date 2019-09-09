@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import debounce from '../lib/helpers/debounce'
 import useDebounce from '../lib/helpers/useDebounce'
 import { Button } from './Map'
 import poweredByGoogle from '../static/img/powered_by_google.png'

@@ -2,6 +2,36 @@
 @import '../components/common/variables';
 
 .index {
-    position: relative;
+
+    padding: 15px;
+    min-height: 100%;
+
+    form {
+        display: block;
+        width: 100%;
+        max-width: 420px;
+        margin: 0 auto;
+    }
+
+    button.location {
+
+        position: relative;
+
+        i {
+            position: absolute;
+            top: 8px;
+            right: 5%;
+            font-size: 1.4em;
+        }
+
+    }
+
+    button.done {
+        position: absolute;
+        bottom: 0;
+        width: calc(100% - 30px);
+        opacity: 0.15;
+    }
+
 }
 
