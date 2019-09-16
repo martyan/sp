@@ -4,18 +4,23 @@ import { connect } from 'react-redux'
 import { useDropzone } from 'react-dropzone'
 import { bindActionCreators } from 'redux'
 import { uploadFile } from '../lib/auth/actions'
-import Button from './common/Button'
 import styled from 'styled-components'
 
-const UploadInput = ({ user, uploadFile, onCompleted, path }) => {
+const UploadInput = ({ user, uploadFile, onCompleted, path, onChange }) => {
     const [ serverError, setServerError ] = useState('')
     const [ loading, setLoading ] = useState(false)
     const [files, setFiles] = useState([])
 
+    const handleFileDrop = (acceptedFiles) => {
+        const filez = acceptedFiles.map(file => ({...file, preview: URL.createObjectURL(file)}))
+        setFiles(filez)
+        onChange(acceptedFiles)
+    }
+
     const { acceptedFiles, rejectedFiles, getRootProps, getInputProps, rootRef } = useDropzone({
         accept: 'image/jpeg, image/png',
         maxSize: 8 * 1024 * 1024,
-        onDrop: acceptedFiles => setFiles(acceptedFiles.map(file => ({...file, preview: URL.createObjectURL(file)})))
+        onDrop: handleFileDrop
     })
 
     useEffect(() => () => {
@@ -23,40 +28,40 @@ const UploadInput = ({ user, uploadFile, onCompleted, path }) => {
         files.forEach(file => URL.revokeObjectURL(file.preview));
     }, [files]);
 
-    const getUploadPromise = (file, index) => {
-        const ext = file.name.substring(file.name.lastIndexOf('.') + 1).toLowerCase()
-        const time = new Date().getTime()
-        const name = `${time}_${index}.${ext}`
-        const pathname = `${path}/${name}`
-
-        return uploadFile(file, name, pathname)
-    }
-
-    const handleSubmit = (e) => {
-        e.preventDefault()
-
-        if(acceptedFiles.length === 0) return
-
-        setLoading(true)
-
-        const fileUploads = acceptedFiles.map((file, index) => getUploadPromise(file, index))
-
-        Promise.all(fileUploads)
-            .then(snapshots => {
-                setLoading(false)
-
-                const links = snapshots.map(snapshot => snapshot.ref.getDownloadURL())
-
-                Promise.all(links)
-                    .then(onCompleted)
-                    .catch(console.error)
-
-            })
-            .catch(error => {
-                setLoading(false)
-                setServerError(error.code)
-            })
-    }
+    // const getUploadPromise = (file, index) => {
+    //     const ext = file.name.substring(file.name.lastIndexOf('.') + 1).toLowerCase()
+    //     const time = new Date().getTime()
+    //     const name = `${time}_${index}.${ext}`
+    //     const pathname = `${path}/${name}`
+    //
+    //     return uploadFile(file, name, pathname)
+    // }
+    //
+    // const handleSubmit = (e) => {
+    //     e.preventDefault()
+    //
+    //     if(acceptedFiles.length === 0) return
+    //
+    //     setLoading(true)
+    //
+    //     const fileUploads = acceptedFiles.map((file, index) => getUploadPromise(file, index))
+    //
+    //     Promise.all(fileUploads)
+    //         .then(snapshots => {
+    //             setLoading(false)
+    //
+    //             const links = snapshots.map(snapshot => snapshot.ref.getDownloadURL())
+    //
+    //             Promise.all(links)
+    //                 .then(onCompleted)
+    //                 .catch(console.error)
+    //
+    //         })
+    //         .catch(error => {
+    //             setLoading(false)
+    //             setServerError(error.code)
+    //         })
+    // }
 
     return (
         <Wrapper>
@@ -74,8 +79,7 @@ const UploadInput = ({ user, uploadFile, onCompleted, path }) => {
 }
 
 UploadInput.propTypes = {
-    onCompleted: PropTypes.func.isRequired,
-    path: PropTypes.string.isRequired
+    onChange: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => ({

@@ -12,17 +12,26 @@ import TextInput from '../components/common/TextInput'
 import UploadInput from '../components/UploadInput'
 import TextArea from '../components/common/TextArea'
 import Button from '../components/common/Button'
-import './index.scss'
 import Modal from '../components/common/Modal'
+import Editor from '../components/Editor'
+import './index.scss'
 
 const Home = ({ getTodos, user }) => {
 
     const [ caption, setCaption ] = useState('')
     const [ tags, setTags ] = useState('')
     const [ mapVisible, setMapVisible ] = useState(false)
+    const [ editorVisible, setEditorVisible ] = useState(false)
+    const [ files, setFiles ] = useState([])
 
     const handleSubmit = (e) => {
         e.preventDefault()
+    }
+
+    const handleInputChange = (files) => {
+        console.log(files)
+        setFiles(files)
+        setEditorVisible(true)
     }
 
     return (
@@ -37,7 +46,7 @@ const Home = ({ getTodos, user }) => {
 
                 <form onSubmit={handleSubmit}>
 
-                    <UploadInput />
+                    <UploadInput onChange={handleInputChange} />
 
                     <Button className="location" onClick={() => setMapVisible(true)}>Choose location <i className="fa fa-map-marker"></i></Button>
 
@@ -48,6 +57,23 @@ const Home = ({ getTodos, user }) => {
                     <Button className="done" disabled>Done</Button>
 
                 </form>
+
+                <Modal
+                    visible={editorVisible}
+                    onClose={() => setEditorVisible(false)}
+                    classNames={{modal: 'no-padding full', overlay: 'no-padding'}}
+                    noPadding
+                >
+                    <div tabIndex={0}>
+                        {files.length > 0 && (
+                            <Editor
+                                file={files[0]}
+                                onCancel={() => setEditorVisible(false)}
+                                onConfirm={() => setEditorVisible(false)}
+                            />
+                        )}
+                    </div>
+                </Modal>
 
                 <Modal
                     visible={mapVisible}
