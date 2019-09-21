@@ -6,10 +6,12 @@ const Button = ({ children, loading, onClick, className }) => (
         <button className={`button ${className || ''}`} onClick={onClick}>
             {children}
 
-            <span className={loading ? 'loading visible' : 'loading'}>
-                <span className="double-bounce1"></span>
-                <span className="double-bounce2"></span>
-            </span>
+            {typeof loading !== 'undefined' && (
+                <span className={loading ? 'loading visible' : 'loading'}>
+                    <span className="double-bounce1"></span>
+                    <span className="double-bounce2"></span>
+                </span>
+            )}
         </button>
 )
 

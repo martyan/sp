@@ -6,10 +6,10 @@ import { bindActionCreators } from 'redux'
 import { uploadFile } from '../lib/auth/actions'
 import styled from 'styled-components'
 
-const UploadInput = ({ user, uploadFile, onCompleted, path, onChange }) => {
+const UploadInput = ({ user, uploadFile, onCompleted, path, onChange, preview, openEditor }) => {
     const [ serverError, setServerError ] = useState('')
     const [ loading, setLoading ] = useState(false)
-    const [files, setFiles] = useState([])
+    const [ files, setFiles ] = useState([])
 
     const handleFileDrop = (acceptedFiles) => {
         const filez = acceptedFiles.map(file => ({...file, preview: URL.createObjectURL(file)}))
@@ -18,7 +18,7 @@ const UploadInput = ({ user, uploadFile, onCompleted, path, onChange }) => {
     }
 
     const { acceptedFiles, rejectedFiles, getRootProps, getInputProps, rootRef } = useDropzone({
-        accept: 'image/jpeg, image/png',
+        accept: 'image/jpeg',
         maxSize: 8 * 1024 * 1024,
         onDrop: handleFileDrop
     })
@@ -65,14 +65,21 @@ const UploadInput = ({ user, uploadFile, onCompleted, path, onChange }) => {
 
     return (
         <Wrapper>
+            {preview && (
+                <>
+                    <button className="change" onClick={() => rootRef.current.click()}><i className="fa fa-picture-o"></i></button>
+                    <button className="crop" onClick={openEditor}><i className="fa fa-pencil"></i></button>
+                    <img src={preview} />
+                </>
+            )}
+
             <div {...getRootProps()}>
                 <input {...getInputProps()} />
-                <div className="dropzone">
-                    {files.length === 0 ?
-                        <i className="fa fa-picture-o"></i> :
-                        <img src={files[0].preview} />
-                    }
-                </div>
+                {!preview && (
+                    <div className="dropzone">
+                        <i className="fa fa-picture-o"></i>
+                    </div>
+                )}
             </div>
         </Wrapper>
     )
@@ -96,17 +103,48 @@ export default connect(mapStateToProps, mapDispatchToProps)(UploadInput)
 
 
 const Wrapper = styled.div`
+    position: relative;
+    margin-bottom: 15px;
+    background: #f6f6f6;
+    border-radius: 5px;
+    overflow: hidden;
+    
+    img {
+        display: block;
+        width: 100%;
+        max-height: 240px;
+        object-fit: contain;
+    }
+    
+    .change, .crop {
+        position: absolute;
+        right: 10px;
+        z-index: 99;
+        width: 36px;
+        height: 36px;
+        line-height: 31px;
+        font-size: .95em;
+        text-align: center;
+        background: #444;
+        border-radius: 50%;
+        border: 0;
+        color: white;
+    }
+    
+    .change {
+        bottom: 10px;
+    }
+    
+    .crop {
+        top: 10px;
+    }
+
     .dropzone {
         position: relative;
         width: 100%;
         min-height: 150px;
-        background: #f6f6f6;
-        border-radius: 5px;
-        margin-bottom: 15px;
-    
         cursor: pointer;
-        overflow: hidden;
-        
+
         i {
             position: absolute;
             top: 50%;
@@ -115,10 +153,12 @@ const Wrapper = styled.div`
             font-size: 2.8em;
             color: #888;
         }
-        
+
         img {
             display: block;
             width: 100%;
+            max-height: 240px;
+            object-fit: contain;
         }
-    }   
+    }
 `

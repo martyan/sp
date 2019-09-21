@@ -22,8 +22,6 @@ const mergeClassNames = (classNames) => {
 const Modal = ({ visible, onClose, classNames, children}) => {
     const mergedClassNames = mergeClassNames(classNames)
 
-    console.log(mergedClassNames)
-
     return (
         <ResponsiveModal
             open={visible}

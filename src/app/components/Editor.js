@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import Cropper from 'react-easy-crop'
 import styled from 'styled-components'
+import cropImage from '../lib/helpers/cropImage'
 
-const Editor = ({ file, onCancel, onConfirm }) => {
+const Editor = ({ file, onCancel, onConfirm, initialCroppedArea, initialRatio }) => {
     const [ preview, setPreview ] = useState(null)
-    const [ ratio, setRatio ] = useState(4 / 3)
+    const [ ratio, setRatio ] = useState(initialRatio)
     const [ rotation, setRotation ] = useState(0)
     const [ crop, setCrop ] = useState({ x: 0, y: 0 })
     const [ zoom, setZoom ] = useState(1)
+    const [ croppedArea, setCroppedArea ] = useState(null)
 
     useEffect(() => {
         console.log('mount')
@@ -15,15 +17,22 @@ const Editor = ({ file, onCancel, onConfirm }) => {
         setPreview(url)
     }, [])
 
-    const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
-        console.log(croppedArea, croppedAreaPixels)
-    }, [])
-
     useEffect(() => () => {
         // Make sure to revoke the data uris to avoid memory leaks
         console.log('revoke')
         URL.revokeObjectURL(preview)
     }, [file])
+
+    const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
+        // console.log(croppedArea, croppedAreaPixels)
+        setCroppedArea(croppedAreaPixels)
+    }, [])
+
+    const done = async () => {
+        const croppedImage = await cropImage(preview, croppedArea)
+
+        onConfirm(croppedImage, croppedArea, ratio)
+    }
 
     return (
         <Wrapper>
@@ -35,18 +44,20 @@ const Editor = ({ file, onCancel, onConfirm }) => {
                 <button onClick={() => setRatio(9 / 16)}>9:16</button>
             </Controls>
 
-            <Controls>
-                {/*<input*/}
-                    {/*type="range"*/}
-                    {/*min={-180}*/}
-                    {/*max={180}*/}
-                    {/*step={0.5}*/}
-                    {/*value={rotation}*/}
-                    {/*onChange={e => setRotation(e.target.value)}*/}
-                {/*/>*/}
-                <button onClick={() => setRotation(rotation - 30)}><i className="fa fa-repeat"></i></button>
-                <button onClick={() => setRotation(rotation + 30)}><i className="fa fa-undo"></i></button>
-            </Controls>
+            {/*<Controls>*/}
+                {/*{false && (*/}
+                    {/*<input*/}
+                        {/*type="range"*/}
+                        {/*min={-180}*/}
+                        {/*max={180}*/}
+                        {/*step={0.5}*/}
+                        {/*value={rotation}*/}
+                        {/*onChange={e => setRotation(e.target.value)}*/}
+                    {/*/>*/}
+                {/*)}*/}
+                {/*<button onClick={() => setRotation(rotation + 30)}><i className="fa fa-repeat"></i></button>*/}
+                {/*<button onClick={() => setRotation(rotation - 30)}><i className="fa fa-undo"></i></button>*/}
+            {/*</Controls>*/}
 
             <CropContainer>
                 <Cropper
@@ -58,12 +69,13 @@ const Editor = ({ file, onCancel, onConfirm }) => {
                     onCropChange={setCrop}
                     onCropComplete={onCropComplete}
                     onZoomChange={setZoom}
+                    initialCroppedAreaPixels={initialCroppedArea}
                 />
             </CropContainer>
 
             <Controls>
                 <button onClick={onCancel}><i className="fa fa-times"></i></button>
-                <button onClick={onConfirm}><i className="fa fa-check"></i></button>
+                <button onClick={done}><i className="fa fa-check"></i></button>
             </Controls>
         </Wrapper>
     )
@@ -72,12 +84,14 @@ const Editor = ({ file, onCancel, onConfirm }) => {
 export default Editor
 
 const Wrapper = styled.div`
+    height: 100vh; /* Use vh as a fallback for browsers that do not support Custom Properties */
+    height: calc(var(--vh, 1vh) * 100);
     background: #000;
 `
 
 const CropContainer = styled.div`
     position: relative;
-    height: calc(100vh - 150px);
+    height: calc(100% - 100px);
 `
 
 const Controls = styled.div`

@@ -16,22 +16,35 @@ import Modal from '../components/common/Modal'
 import Editor from '../components/Editor'
 import './index.scss'
 
+
 const Home = ({ getTodos, user }) => {
+    const defaultRatio = 4 / 3
 
     const [ caption, setCaption ] = useState('')
     const [ tags, setTags ] = useState('')
     const [ mapVisible, setMapVisible ] = useState(false)
     const [ editorVisible, setEditorVisible ] = useState(false)
     const [ files, setFiles ] = useState([])
+    const [ img, setImg ] = useState(null)
+    const [ croppedArea, setCroppedArea ] = useState(null)
+    const [ ratio, setRatio ] = useState(defaultRatio)
 
     const handleSubmit = (e) => {
         e.preventDefault()
     }
 
     const handleInputChange = (files) => {
-        console.log(files)
         setFiles(files)
+        setRatio(defaultRatio)
+        setCroppedArea(null)
         setEditorVisible(true)
+    }
+
+    const handleEditorChange = (img, crop, ratio) => {
+        setImg(img)
+        setEditorVisible(false)
+        setCroppedArea(crop)
+        setRatio(ratio)
     }
 
     return (
@@ -46,7 +59,11 @@ const Home = ({ getTodos, user }) => {
 
                 <form onSubmit={handleSubmit}>
 
-                    <UploadInput onChange={handleInputChange} />
+                    <UploadInput
+                        preview={img}
+                        onChange={handleInputChange}
+                        openEditor={() => setEditorVisible(true)}
+                    />
 
                     <Button className="location" onClick={() => setMapVisible(true)}>Choose location <i className="fa fa-map-marker"></i></Button>
 
@@ -69,7 +86,9 @@ const Home = ({ getTodos, user }) => {
                             <Editor
                                 file={files[0]}
                                 onCancel={() => setEditorVisible(false)}
-                                onConfirm={() => setEditorVisible(false)}
+                                onConfirm={handleEditorChange}
+                                initialCroppedArea={croppedArea}
+                                initialRatio={ratio}
                             />
                         )}
                     </div>
