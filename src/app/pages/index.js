@@ -14,6 +14,9 @@ import TextArea from '../components/common/TextArea'
 import Button from '../components/common/Button'
 import Modal from '../components/common/Modal'
 import Editor from '../components/Editor'
+import Gallery from 'react-photo-gallery'
+import CustomGalleryItem from '../components/CustomGalleryItem'
+// import Gallery from 'react-grid-gallery'
 import './index.scss'
 
 
@@ -47,6 +50,46 @@ const Home = ({ getTodos, user }) => {
         setRatio(ratio)
     }
 
+    const PHOTOS = [
+        {
+            src: 'https://via.placeholder.com/50x10',
+            width: 5,
+            height: 2,
+        },
+        {
+            src: 'https://via.placeholder.com/160x90',
+            width: 16,
+            height: 9,
+        },
+        {
+            src: 'https://via.placeholder.com/40x30',
+            width: 4,
+            height: 3,
+        },
+        {
+            src: 'https://via.placeholder.com/10x10',
+            width: 1,
+            height: 1,
+        },
+        {
+            src: 'https://via.placeholder.com/90x160',
+            width: 9,
+            height: 16,
+        },
+        {
+            src: 'https://via.placeholder.com/30x40',
+            width: 3,
+            height: 4,
+        }
+    ]
+
+    let photos = []
+
+    Array.from(Array(50)).forEach((x, i) => {
+        const item = PHOTOS[Math.floor(Math.random() * PHOTOS.length)]
+        photos.push(item)
+    })
+
     return (
         <PageWrapper>
             <div className="index">
@@ -56,6 +99,13 @@ const Home = ({ getTodos, user }) => {
                     <meta name="keywords" content="nextjs, react, firebase, serverless, minimalistic, boilerplate, full-stack, authentication, todos" />
                     <title>Todo list | Nextbase</title>
                 </Head>
+
+                <Gallery
+                    photos={photos}
+                    // renderImage={CustomGalleryItem}
+                    direction={'column'}
+                    // images={photos}
+                />
 
                 <form onSubmit={handleSubmit}>
 
