@@ -9,9 +9,9 @@ import withAuthentication from '../lib/withAuthentication'
 import PageWrapper from '../components/PageWrapper'
 import Masonry from '../components/Masonry'
 
-const fakeData = (count = 1000) => {
+const fakeData = (count = 10000) => {
     let data = []
-    const ROW_HEIGHTS = [25, 50, 75, 100]
+    const ROW_HEIGHTS = [25, 33, 50, 66, 75, 100]
 
     for(let i = 0; i < count; i++) {
         data.push({
@@ -26,6 +26,7 @@ const fakeData = (count = 1000) => {
 const MasonryPage = () => {
 
     // const [ croppedArea, setCroppedArea ] = useState(null)
+    const items = fakeData()
 
     return (
         <PageWrapper>
@@ -37,7 +38,9 @@ const MasonryPage = () => {
 
             <div className="masonry">
 
-                <Masonry items={fakeData()} />
+                infinity masonry<br />
+
+                <Masonry items={items} />
 
             </div>
         </PageWrapper>
