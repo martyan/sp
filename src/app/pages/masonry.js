@@ -11,8 +11,6 @@ import Masonry from '../components/Masonry'
 
 const MasonryPage = () => {
 
-    // const [ croppedArea, setCroppedArea ] = useState(null)
-
     return (
         <PageWrapper>
             <Head>
