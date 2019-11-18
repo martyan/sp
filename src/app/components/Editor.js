@@ -37,6 +37,7 @@ const Editor = ({ file, onCancel, onConfirm, initialCroppedArea, initialRatio })
     return (
         <Wrapper>
             <Controls>
+                <button onClick={() => setRatio(5 / 1)}>5:1</button>
                 <button onClick={() => setRatio(16 / 9)}>16:9</button>
                 <button onClick={() => setRatio(4 / 3)}>4:3</button>
                 <button onClick={() => setRatio(1)}>square</button>
