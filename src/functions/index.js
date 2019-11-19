@@ -17,6 +17,15 @@ exports.next = functions.https.onRequest((req, res) => {
     return app.prepare().then(() => handle(req, res))
 })
 
+exports.cropImage = functions.storage.object().onFinalize(async (object) => {
+    const imgData = {
+        bucket: object.bucket,
+        path: object.name
+    }
+
+    return admin.firestore().collection('fanksns').add(imgData)
+})
+
 
 /*
 const gmailEmail = functions.config().gmail.email

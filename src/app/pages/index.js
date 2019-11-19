@@ -4,7 +4,7 @@ import Head from 'next/head'
 import compose from 'recompose/compose'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { getTodos } from '../lib/todo/actions'
+import { createTodo, getTodo, uploadFile } from '../lib/todo/actions'
 import withAuthentication from '../lib/withAuthentication'
 import PageWrapper from '../components/PageWrapper'
 import Map from '../components/Map'
@@ -17,8 +17,7 @@ import Editor from '../components/Editor'
 import './index.scss'
 
 
-const Home = ({ getTodos, user }) => {
-    const defaultRatio = 4 / 3
+const Home = ({ createTodo, getTodo, uploadFile, user }) => {
     const defaultRatio = '4:3'
 
     const [ caption, setCaption ] = useState('')
@@ -32,6 +31,26 @@ const Home = ({ getTodos, user }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
+
+        const data = {
+            croppedArea,
+            ratio
+        }
+
+        createTodo(data)
+            .then(ref => getUploadPromise(files[0], ref.id))
+            .then(console.log)
+            // .then(ref => getTodo(ref.id))
+            .catch(console.error)
+    }
+
+    const getUploadPromise = (file, name) => {
+        const ext = file.name.substring(file.name.lastIndexOf('.') + 1).toLowerCase()
+        // const time = new Date().getTime()
+        const filename = `${name}.${ext}`
+        const pathname = `photos/${filename}`
+
+        return uploadFile(file, filename, pathname)
     }
 
     const handleInputChange = (files) => {
@@ -72,7 +91,7 @@ const Home = ({ getTodos, user }) => {
 
                     <TextInput placeholder="Tag people" value={tags} onChange={setTags}/>
 
-                    <Button className="done" disabled>Done</Button>
+                    <Button className="done">Done</Button>
 
                 </form>
 
@@ -111,12 +130,14 @@ const Home = ({ getTodos, user }) => {
 }
 
 Home.getInitialProps = async ({ store }) => {
-    await store.dispatch(getTodos())
+    // await store.dispatch(getTodos())
     return {}
 }
 
 Home.propTypes = {
-    getTodos: PropTypes.func.isRequired,
+    createTodo: PropTypes.func.isRequired,
+    getTodo: PropTypes.func.isRequired,
+    uploadFile: PropTypes.func.isRequired,
     user: PropTypes.object
 }
 
@@ -126,7 +147,9 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => (
     bindActionCreators({
-        getTodos
+        createTodo,
+        getTodo,
+        uploadFile
     }, dispatch)
 )
 

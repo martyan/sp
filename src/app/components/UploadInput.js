@@ -113,6 +113,7 @@ const Wrapper = styled.div`
         display: block;
         width: 100%;
         max-height: 240px;
+        min-height: 180px;
         object-fit: contain;
     }
     
@@ -152,13 +153,6 @@ const Wrapper = styled.div`
             transform: translate(-50%, -50%);
             font-size: 2.8em;
             color: #888;
-        }
-
-        img {
-            display: block;
-            width: 100%;
-            max-height: 240px;
-            object-fit: contain;
         }
     }
 `
