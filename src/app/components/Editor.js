@@ -3,6 +3,23 @@ import Cropper from 'react-easy-crop'
 import styled from 'styled-components'
 import cropImage from '../lib/helpers/cropImage'
 
+export const getRatio = (ratioName) => {
+    switch(ratioName) {
+        case '5:1':
+            return 5/1
+        case '16:9':
+            return 16/9
+        case '4:3':
+            return 4/3
+        case '1:1':
+            return 1/1
+        case '3:4':
+            return 3/4
+        case '9:16':
+            return 9/16
+    }
+}
+
 const Editor = ({ file, onCancel, onConfirm, initialCroppedArea, initialRatio }) => {
     const [ preview, setPreview ] = useState(null)
     const [ ratio, setRatio ] = useState(initialRatio)
@@ -37,12 +54,12 @@ const Editor = ({ file, onCancel, onConfirm, initialCroppedArea, initialRatio })
     return (
         <Wrapper>
             <Controls>
-                <button onClick={() => setRatio(5 / 1)}>5:1</button>
-                <button onClick={() => setRatio(16 / 9)}>16:9</button>
-                <button onClick={() => setRatio(4 / 3)}>4:3</button>
-                <button onClick={() => setRatio(1)}>square</button>
-                <button onClick={() => setRatio(3 / 4)}>3:4</button>
-                <button onClick={() => setRatio(9 / 16)}>9:16</button>
+                <button onClick={() => setRatio('5:1')}>5:1</button>
+                <button onClick={() => setRatio('16:9')}>16:9</button>
+                <button onClick={() => setRatio('4:3')}>4:3</button>
+                <button onClick={() => setRatio('1:1')}>square</button>
+                <button onClick={() => setRatio('3:4')}>3:4</button>
+                <button onClick={() => setRatio('9:16')}>9:16</button>
             </Controls>
 
             {/*<Controls>*/}
@@ -65,7 +82,7 @@ const Editor = ({ file, onCancel, onConfirm, initialCroppedArea, initialRatio })
                     image={preview}
                     crop={crop}
                     zoom={zoom}
-                    aspect={ratio}
+                    aspect={getRatio(ratio)}
                     rotation={rotation}
                     onCropChange={setCrop}
                     onCropComplete={onCropComplete}

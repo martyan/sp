@@ -19,6 +19,7 @@ import './index.scss'
 
 const Home = ({ getTodos, user }) => {
     const defaultRatio = 4 / 3
+    const defaultRatio = '4:3'
 
     const [ caption, setCaption ] = useState('')
     const [ tags, setTags ] = useState('')
