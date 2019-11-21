@@ -48,7 +48,7 @@ const Home = ({ createTodo, getTodo, uploadFile, user }) => {
         const ext = file.name.substring(file.name.lastIndexOf('.') + 1).toLowerCase()
         // const time = new Date().getTime()
         const filename = `${name}.${ext}`
-        const pathname = `photos/${filename}`
+        const pathname = `photos/full/${filename}`
 
         return uploadFile(file, filename, pathname)
     }
