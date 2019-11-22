@@ -4,7 +4,7 @@ import Head from 'next/head'
 import compose from 'recompose/compose'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { getTodos } from '../lib/todo/actions'
+import { getPhotos } from '../lib/todo/actions'
 import withAuthentication from '../lib/withAuthentication'
 import PageWrapper from '../components/PageWrapper'
 import Masonry from '../components/Masonry'
@@ -30,7 +30,7 @@ const MasonryPage = () => {
 }
 
 MasonryPage.getInitialProps = async({ store }) => {
-    await store.dispatch(getTodos())
+    await store.dispatch(getPhotos())
     return {}
 }
 
@@ -45,7 +45,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => (
     bindActionCreators({
-        getTodos
+        getTodos: getPhotos
     }, dispatch)
 )
 

@@ -4,7 +4,7 @@ import Head from 'next/head'
 import compose from 'recompose/compose'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { createTodo, getTodo, uploadFile } from '../lib/todo/actions'
+import { createPhoto, getPhoto, uploadFile } from '../lib/todo/actions'
 import withAuthentication from '../lib/withAuthentication'
 import PageWrapper from '../components/PageWrapper'
 import Map from '../components/Map'
@@ -17,7 +17,7 @@ import Editor from '../components/Editor'
 import './index.scss'
 
 
-const Home = ({ createTodo, getTodo, uploadFile, user }) => {
+const Home = ({ createPhoto, getPhoto, uploadFile, user }) => {
     const defaultRatio = '4:3'
 
     const [ caption, setCaption ] = useState('')
@@ -37,10 +37,10 @@ const Home = ({ createTodo, getTodo, uploadFile, user }) => {
             ratio
         }
 
-        createTodo(data)
+        createPhoto(data)
             .then(ref => getUploadPromise(files[0], ref.id))
             .then(console.log)
-            // .then(ref => getTodo(ref.id))
+            // .then(ref => getPhoto(ref.id))
             .catch(console.error)
     }
 
@@ -85,11 +85,11 @@ const Home = ({ createTodo, getTodo, uploadFile, user }) => {
                         openEditor={() => setEditorVisible(true)}
                     />
 
-                    <Button className="location" onClick={() => setMapVisible(true)}>Choose location <i className="fa fa-map-marker"></i></Button>
+                    {/*<Button className="location" onClick={() => setMapVisible(true)}>Choose location <i className="fa fa-map-marker"></i></Button>*/}
 
-                    <TextArea placeholder="Caption" value={caption} onChange={setCaption}/>
+                    {/*<TextArea placeholder="Caption" value={caption} onChange={setCaption}/>*/}
 
-                    <TextInput placeholder="Tag people" value={tags} onChange={setTags}/>
+                    {/*<TextInput placeholder="Tags" value={tags} onChange={setTags}/>*/}
 
                     <Button className="done">Done</Button>
 
@@ -130,13 +130,13 @@ const Home = ({ createTodo, getTodo, uploadFile, user }) => {
 }
 
 Home.getInitialProps = async ({ store }) => {
-    // await store.dispatch(getTodos())
+    // await store.dispatch(getPhotos())
     return {}
 }
 
 Home.propTypes = {
-    createTodo: PropTypes.func.isRequired,
-    getTodo: PropTypes.func.isRequired,
+    createPhoto: PropTypes.func.isRequired,
+    getPhoto: PropTypes.func.isRequired,
     uploadFile: PropTypes.func.isRequired,
     user: PropTypes.object
 }
@@ -147,8 +147,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => (
     bindActionCreators({
-        createTodo,
-        getTodo,
+        createPhoto,
+        getPhoto,
         uploadFile
     }, dispatch)
 )

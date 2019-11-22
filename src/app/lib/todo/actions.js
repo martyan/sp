@@ -1,30 +1,30 @@
 import { db, storage } from '../firebase'
 
-export const todoDeleted = (todoId) => ({ type: 'TODO_DELETED', todoId })
+export const photoDeleted = (photoId) => ({ type: 'PHOTO_DELETED', photoId })
 
-export const getTodos = () => ({
-    type: 'GET_TODOS',
-    payload: db.collection('todos').orderBy('createdAt', 'desc').get()
+export const getPhotos = () => ({
+    type: 'GET_PHOTOS',
+    payload: db.collection('photos').orderBy('createdAt', 'desc').get()
 })
 
-export const getTodo = (todoId) => ({
-    type: 'GET_TODO',
-    payload: db.collection('todos').doc(todoId).get()
+export const getPhoto = (photoId) => ({
+    type: 'GET_PHOTO',
+    payload: db.collection('photos').doc(photoId).get()
 })
 
-export const createTodo = (todo) => ({
-    type: 'CREATE_TODO',
-    payload: db.collection('todos').add(todo)
+export const createPhoto = (photo) => ({
+    type: 'CREATE_PHOTO',
+    payload: db.collection('photos').add(photo)
 })
 
-export const updateTodo = (todoId, todo) => ({
-    type: 'UPDATE_TODO',
-    payload: db.collection('todos').doc(todoId).update(todo)
+export const updatePhoto = (photoId, photo) => ({
+    type: 'UPDATE_PHOTO',
+    payload: db.collection('photos').doc(photoId).update(photo)
 })
 
-export const deleteTodo = (todoId) => ({
-    type: 'DELETE_TODO',
-    payload: db.collection('todos').doc(todoId).delete()
+export const deletePhoto = (photoId) => ({
+    type: 'DELETE_PHOTO',
+    payload: db.collection('photos').doc(photoId).delete()
 })
 
 export const uploadFile = (file, name, path) => ({
