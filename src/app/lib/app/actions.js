@@ -4,7 +4,7 @@ export const photoDeleted = (photoId) => ({ type: 'PHOTO_DELETED', photoId })
 
 export const getPhotos = () => ({
     type: 'GET_PHOTOS',
-    payload: db.collection('photos').orderBy('createdAt', 'desc').get()
+    payload: db.collection('photos')/*.orderBy('createdAt', 'desc')*/.get()
 })
 
 export const getPhoto = (photoId) => ({

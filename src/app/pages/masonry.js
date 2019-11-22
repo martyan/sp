@@ -4,12 +4,14 @@ import Head from 'next/head'
 import compose from 'recompose/compose'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { getPhotos } from '../lib/todo/actions'
+import { getPhotos } from '../lib/app/actions'
 import withAuthentication from '../lib/withAuthentication'
 import PageWrapper from '../components/PageWrapper'
 import Masonry from '../components/Masonry'
 
-const MasonryPage = () => {
+const MasonryPage = ({ photos }) => {
+
+    console.log(photos)
 
     return (
         <PageWrapper>
@@ -21,7 +23,7 @@ const MasonryPage = () => {
 
             <div className="masonry">
 
-                <Masonry />
+                <Masonry photos={photos} />
 
             </div>
         </PageWrapper>
@@ -35,17 +37,19 @@ MasonryPage.getInitialProps = async({ store }) => {
 }
 
 MasonryPage.propTypes = {
-    getTodos: PropTypes.func.isRequired,
+    getPhotos: PropTypes.func.isRequired,
+    photos: PropTypes.arrayOf(PropTypes.object).isRequired,
     user: PropTypes.object
 }
 
 const mapStateToProps = (state) => ({
-    user: state.auth.user
+    user: state.auth.user,
+    photos: state.app.photos
 })
 
 const mapDispatchToProps = (dispatch) => (
     bindActionCreators({
-        getTodos: getPhotos
+        getPhotos
     }, dispatch)
 )
 
