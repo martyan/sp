@@ -67,8 +67,8 @@ const UploadInput = ({ user, uploadFile, onCompleted, path, onChange, preview, o
         <Wrapper>
             {preview && (
                 <>
-                    <button className="change" onClick={() => rootRef.current.click()}><i className="fa fa-picture-o"></i></button>
-                    <button className="crop" onClick={openEditor}><i className="fa fa-pencil"></i></button>
+                    <button className="change" type="button" onClick={() => rootRef.current.click()}><i className="fa fa-picture-o"></i></button>
+                    <button className="crop" type="button" onClick={openEditor}><i className="fa fa-pencil"></i></button>
                     <img src={preview} />
                 </>
             )}

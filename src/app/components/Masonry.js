@@ -1,6 +1,5 @@
 import React from 'react'
 import { Masonry as Masonic } from 'masonic'
-import { getRatio } from './Editor'
 
 // const PHOTOS = [
 //     {
@@ -42,36 +41,70 @@ import { getRatio } from './Editor'
 //     data.push(item)
 // })
 
+const NAMES = ['Some stoned place', 'Stunner', 'What the heck?', 'In da jungle', 'Wrong way']
+
 const Masonry = ({ photos }) => {
 
     const data = photos.map(photo => {
         const ratio = photo.ratio.split(':')
         const width = ratio[0]
         const height = ratio[1]
+        const name = NAMES[Math.floor(Math.random() * NAMES.length)]
 
         return {
             src: `https://firebasestorage.googleapis.com/v0/b/stoned-places.appspot.com/o/photos%2Fcropped%2F${photo.id}.jpg?alt=media`,
             width,
-            height
+            height,
+            name
         }
     })
 
     console.log(data)
+    const ddata = [data[0], data[0], ...data, ...data.reverse(), data[0], data[0], ...data]
 
     return (
         <div style={{
             width: '100%',
             maxWidth: '720px',
-            margin: '0 auto'
+            margin: '0 auto',
+            padding: '5px'
         }}>
             <Masonic
-                items={data}
-                columnGutter={10}
+                items={ddata}
+                columnGutter={5}
                 columnCount={2}
             >
                 {({ index, data, width }) => (
-                    <div>
-                        <img src={data.src} style={{width: '100%'}} />
+                    <div style={{
+                        borderRadius: '5px',
+                        overflow: 'hidden',
+                        position: 'relative'
+                    }}>
+                        <div style={{
+                            position: 'absolute',
+                            top: '3px',
+                            left: '3px',
+                            background: 'white',
+                            color: '#444',
+                            fontSize: '.7em',
+                            padding: '4px 5px',
+                            borderRadius: '5px',
+                            opacity: .9
+                        }}>{index}</div>
+                        <img
+                            src={data.src}
+                            style={{
+                                display: 'block',
+                                width: '100%'
+                            }}
+                        />
+                        {/*<div style={{
+                            fontFamily: 'Roboto Slab',
+                            fontSize: '.88em',
+                            padding: '3px 0',
+                            fontWeight: '400',
+                            color: '#222',
+                        }}>{data.name}</div>*/}
                     </div>
                 )}
             </Masonic>
