@@ -55,7 +55,7 @@ const DetailPage = ({ photos }) => {
                             </div>
                         ))}
                     </SwipeableViews>
-                    <Pagination dots={photos.length} index={index} onChangeIndex={setIndex} />
+                    <Pagination dots={photos.length} index={index} onIndexChange={setIndex} />
                 </div>
 
                 <Masonry photos={photos} />

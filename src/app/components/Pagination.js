@@ -1,44 +1,64 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import PaginationDot from './PaginationDot';
+import React from 'react'
+import PropTypes from 'prop-types'
+import styled from 'styled-components'
 
-const styles = {
-    root: {
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        width: '100%',
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-};
+const PaginationRoot = styled.div`
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`
 
-class Pagination extends React.Component {
-    handleClick = (event, index) => {
-        this.props.onChangeIndex(index);
-    };
+const PaginationDot = styled.button`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 18px;
+    width: 18px;
+    cursor: pointer;
+    border: 0;
+    background: none;
+    padding: 0;
+`
 
-    render() {
-        const { index, dots } = this.props;
+const Inner = styled.div`
+    background-color: ${({ active, isClose }) => active ? '#059033' : isClose ? '#bbb' : '#aaa'};
+    height: 5px;
+    width: 5px;
+    border-radius: 50%;
+    margin: 3px;
+    transition: .5s ease;
+`
 
-        const children = [];
+const Pagination = ({ index, dots, onIndexChange }) => {
 
-        for (let i = 0; i < dots; i += 1) {
-            children.push(
-                <PaginationDot key={i} index={i} active={i === index} onClick={this.handleClick} />,
-            );
-        }
+    return (
+        <PaginationRoot>
+            {new Array(dots).fill(1).map((dot, i) => (
+                <PaginationDot
+                    key={i}
+                    index={i}
+                    onClick={() => onIndexChange(i)}
+                    type="button"
+                >
+                    <Inner
+                        active={i === index}
+                        isClose={(i === index - 1 || i === index + 1)}
+                    />
+                </PaginationDot>
+            ))}
+        </PaginationRoot>
+    )
 
-        return <div style={styles.root}>{children}</div>;
-    }
 }
 
 Pagination.propTypes = {
     dots: PropTypes.number.isRequired,
     index: PropTypes.number.isRequired,
-    onChangeIndex: PropTypes.func.isRequired,
-};
+    onIndexChange: PropTypes.func.isRequired
+}
 
-export default Pagination;
+export default Pagination
