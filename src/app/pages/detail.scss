@@ -3,12 +3,15 @@
 
 .detail {
 
-  .carousel {
-    background: #222;
-  }
-
   .carousel-wrapper {
     position: relative;
+    padding: 0 5px;
+    margin-top: 5px;
+  }
+
+  .carousel {
+    background: #222;
+    border-radius: 5px;
   }
 
 }

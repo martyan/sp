@@ -25,7 +25,8 @@ const PaginationDot = styled.button`
 `
 
 const Inner = styled.div`
-    background-color: ${({ active, isClose }) => active ? '#059033' : isClose ? '#bbb' : '#aaa'};
+    background-color: ${({ active, isClose }) => active ? '#fff' : isClose ? '#fff' : '#bbb'};
+    opacity: ${({ active }) => active ? 1 : .5};
     height: 5px;
     width: 5px;
     border-radius: 50%;

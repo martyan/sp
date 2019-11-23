@@ -10,11 +10,19 @@ import PageWrapper from '../components/PageWrapper'
 import Masonry from '../components/Masonry'
 import SwipeableViews from 'react-swipeable-views'
 import Pagination from '../components/Pagination'
+import Carousel, { Modal, ModalGateway } from 'react-images'
 import './detail.scss'
 
 const DetailPage = ({ photos }) => {
 
     const [ index, setIndex ] = useState(0)
+    const [ galleryOpen, setGalleryOpen ] = useState(false)
+    const [ galleryIndex, setGalleryIndex ] = useState(0)
+
+    const handleSlideClick = (i) => {
+        setGalleryOpen(true)
+        setGalleryIndex(i)
+    }
 
     console.log(photos)
 
@@ -36,12 +44,10 @@ const DetailPage = ({ photos }) => {
                         enableMouseEvents
                         resistance
                     >
-                        {photos.map(photo => (
+                        {photos.map((photo, i) => (
                             <div
                                 key={photo.id}
-                                style={{
-                                    maxHeight: '50vh'
-                                }}
+                                onClick={() => handleSlideClick(i)}
                             >
                                 <img
                                     src={`https://firebasestorage.googleapis.com/v0/b/stoned-places.appspot.com/o/photos%2Fcropped%2F${photo.id}.jpg?alt=media`}
@@ -60,6 +66,24 @@ const DetailPage = ({ photos }) => {
 
                 <Masonry photos={photos} />
 
+                <ModalGateway>
+                    {galleryOpen ? (
+                        <Modal
+                            onClose={() => setGalleryOpen(false)}
+                            styles={{
+                                blanket: (base, state) => ({
+                                    ...base,
+                                    background: 'rgba(0,0,0, .95)'
+                                })
+                            }}
+                        >
+                            <Carousel
+                                views={photos.map(photo => ({src: `https://firebasestorage.googleapis.com/v0/b/stoned-places.appspot.com/o/photos%2Fcropped%2F${photo.id}.jpg?alt=media`}))}
+                                currentIndex={galleryIndex}
+                            />
+                        </Modal>
+                    ) : null}
+                </ModalGateway>
             </div>
         </PageWrapper>
     )

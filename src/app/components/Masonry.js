@@ -80,7 +80,8 @@ const Masonry = ({ photos }) => {
                         overflow: 'hidden',
                         position: 'relative'
                     }}>
-                        <div style={{
+                        <a href="#">
+                        {/*<div style={{
                             position: 'absolute',
                             top: '3px',
                             left: '3px',
@@ -90,7 +91,7 @@ const Masonry = ({ photos }) => {
                             padding: '4px 5px',
                             borderRadius: '5px',
                             opacity: .9
-                        }}>{index}</div>
+                        }}>{index}</div>*/}
                         <img
                             src={data.src}
                             style={{
@@ -105,6 +106,7 @@ const Masonry = ({ photos }) => {
                             fontWeight: '400',
                             color: '#222',
                         }}>{data.name}</div>*/}
+                        </a>
                     </div>
                 )}
             </Masonic>
