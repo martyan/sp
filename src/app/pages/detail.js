@@ -64,7 +64,10 @@ const DetailPage = ({ photos }) => {
                     <Pagination dots={photos.length} index={index} onIndexChange={setIndex} />
                 </div>
 
-                <Masonry photos={photos} />
+                <Masonry
+                    photos={photos}
+                    setGalleryIndex={handleSlideClick}
+                />
 
                 <ModalGateway>
                     {galleryOpen ? (

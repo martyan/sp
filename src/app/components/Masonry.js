@@ -43,7 +43,7 @@ import { Masonry as Masonic } from 'masonic'
 
 const NAMES = ['Some stoned place', 'Stunner', 'What the heck?', 'In da jungle', 'Wrong way']
 
-const Masonry = ({ photos }) => {
+const Masonry = ({ photos, setGalleryIndex }) => {
 
     const data = photos.map(photo => {
         const ratio = photo.ratio.split(':')
@@ -59,9 +59,6 @@ const Masonry = ({ photos }) => {
         }
     })
 
-    console.log(data)
-    const ddata = [data[0], data[0], ...data, ...data.reverse(), data[0], data[0], ...data]
-
     return (
         <div style={{
             width: '100%',
@@ -70,17 +67,19 @@ const Masonry = ({ photos }) => {
             padding: '5px'
         }}>
             <Masonic
-                items={ddata}
+                items={data}
                 columnGutter={5}
                 columnCount={2}
             >
                 {({ index, data, width }) => (
-                    <div style={{
-                        borderRadius: '5px',
-                        overflow: 'hidden',
-                        position: 'relative'
-                    }}>
-                        <a href="#">
+                    <div
+                        style={{
+                            borderRadius: '5px',
+                            overflow: 'hidden',
+                            position: 'relative'
+                        }}
+                        onClick={() => setGalleryIndex(index)}
+                    >
                         {/*<div style={{
                             position: 'absolute',
                             top: '3px',
@@ -106,7 +105,6 @@ const Masonry = ({ photos }) => {
                             fontWeight: '400',
                             color: '#222',
                         }}>{data.name}</div>*/}
-                        </a>
                     </div>
                 )}
             </Masonic>
