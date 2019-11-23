@@ -9,9 +9,13 @@ import withAuthentication from '../lib/withAuthentication'
 import PageWrapper from '../components/PageWrapper'
 import Masonry from '../components/Masonry'
 import ReactSwipe from 'react-swipe'
+import SwipeableViews from 'react-swipeable-views'
+import Pagination from '../components/Pagination'
 import './detail.scss'
 
 const DetailPage = ({ photos }) => {
+
+    const [ index, setIndex ] = useState(0)
 
     console.log(photos)
 
@@ -26,6 +30,36 @@ const DetailPage = ({ photos }) => {
             </Head>
 
             <div className="detail">
+
+                <div className="carousel-wrapper">
+                    <SwipeableViews
+                        className="carousel"
+                        onChangeIndex={setIndex}
+                        index={index}
+                        enableMouseEvents
+                        resistance
+                    >
+                        {photos.map(photo => (
+                            <div
+                                key={photo.id}
+                                style={{
+                                    maxHeight: '50vh'
+                                }}
+                            >
+                                <img
+                                    src={`https://firebasestorage.googleapis.com/v0/b/stoned-places.appspot.com/o/photos%2Fcropped%2F${photo.id}.jpg?alt=media`}
+                                    style={{
+                                        display: 'block',
+                                        width: '100%',
+                                        height: '200px',
+                                        objectFit: 'contain'
+                                    }}
+                                />
+                            </div>
+                        ))}
+                    </SwipeableViews>
+                    <Pagination dots={photos.length} index={index} onChangeIndex={setIndex} />
+                </div>
 
                 <ReactSwipe
                     className="carousel"
