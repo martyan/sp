@@ -7,12 +7,12 @@
     max-width: 720px;
     margin: 25px auto 0;
     position: relative;
-    padding: 0 5px;
+    //padding: 0 5px;
   }
 
   .carousel {
     background: #222;
-    border-radius: 5px;
+    //border-radius: 5px;
   }
 
   .hero {
@@ -35,11 +35,33 @@
     max-width: 720px;
     margin: 25px auto 0;
     padding: 0 15px;
-    font-size: 1.3em;
-    //color: white;
-    //background: #333;
+    font-size: 1.4em;
     color: #333;
-    font-family: 'Roboto Slab';
+    font-family: 'Roboto Slab', serif;
+  }
+
+  h2 {
+    max-width: 720px;
+    margin: 25px auto 0;
+    padding: 0 15px;
+    font-size: 1.1em;
+    color: #333;
+    font-family: 'Roboto Slab', serif;
+  }
+
+  .tags {
+
+    max-width: 720px;
+    margin: 15px auto 0;
+    padding: 0 15px;
+
+    a {
+      font-size: .9em;
+      font-weight: 500;
+      font-family: 'Muli', sans-serif;
+      color: #888;
+    }
+
   }
 
   p {
@@ -47,7 +69,7 @@
     margin: 25px auto;
     padding: 0 15px;
     line-height: 150%;
-    font-family: 'Roboto Slab';
+    font-family: 'Roboto Slab', serif;
     font-weight: 300;
     color: #222;
   }

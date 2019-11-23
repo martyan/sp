@@ -51,7 +51,6 @@ const DetailPage = ({ photos }) => {
                         bgImageAlt="Some alt text"
                         strength={-100}
                         bgClassName={`hero`}
-                        bgWidth={'100%'}
                     >
                         <div style={{ height: '60vh' }} />
                     </Parallax>
@@ -61,7 +60,11 @@ const DetailPage = ({ photos }) => {
 
                 <h1 className="title" data-aos="fade-up">Lorem ipsum trip</h1>
 
-                <p className="perex" data-aos="fade-up">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium assumenda cumque delectus ea earum fuga id impedit, ipsum, molestiae nihil non officiis perferendis provident saepe unde ut veritatis! Ducimus, quaerat.</p>
+                <p className="tags" data-aos="fade-up">
+                    <a>#morocco</a> <a>#surf</a> <a>#trip</a> <a>#hightimes</a>
+                </p>
+
+                <p className="perex" data-aos="fade-up">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium assumenda cumque delectus ea earum fuga id impedit.</p>
 
                 <div className="carousel-wrapper" data-aos="fade-up">
                     <SwipeableViews
@@ -91,6 +94,8 @@ const DetailPage = ({ photos }) => {
                     <Pagination dots={photos.length} index={index} onIndexChange={setIndex} />
                 </div>
 
+                <h2 data-aos="fade-up">Plotum</h2>
+
                 <p data-aos="fade-up">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium assumenda cumque delectus ea earum fuga id impedit, ipsum, molestiae nihil non officiis perferendis provident saepe unde ut veritatis! Ducimus, quaerat.</p>
 
                 <div data-aos="fade-up">
@@ -99,13 +104,14 @@ const DetailPage = ({ photos }) => {
                         bgImageAlt="Some alt text"
                         strength={100}
                         bgClassName={`parallax`}
-                        bgWidth={'100%'}
                     >
                         <div style={{ height: '200px' }} />
                     </Parallax>
                 </div>
 
-                <p data-aos="fade-up">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium assumenda cumque delectus ea earum fuga id impedit, ipsum, molestiae nihil non officiis perferendis provident saepe unde ut veritatis! Ducimus, quaerat.</p>
+                <h2 data-aos="fade-up">Lipsum amet</h2>
+
+                <p data-aos="fade-up">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium assumenda cumque delectus ea earum fuga id impedit, ipsum, molestiae nihil non officiis.</p>
 
                 <div data-aos="fade-up">
                     <Parallax
@@ -113,13 +119,25 @@ const DetailPage = ({ photos }) => {
                         bgImageAlt="Some alt text"
                         strength={100}
                         bgClassName={`parallax`}
-                        bgWidth={'100%'}
                     >
                         <div style={{ height: '200px' }} />
                     </Parallax>
                 </div>
 
-                <p data-aos="fade-up">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium assumenda cumque delectus ea earum fuga id impedit, ipsum, molestiae nihil non officiis perferendis provident saepe unde ut veritatis! Ducimus, quaerat.</p>
+                <div data-aos="fade-up">
+                    <Parallax
+                        bgImage={`https://firebasestorage.googleapis.com/v0/b/stoned-places.appspot.com/o/photos%2Fcropped%2F${photos[6].id}.jpg?alt=media`}
+                        bgImageAlt="Some alt text"
+                        strength={100}
+                        bgClassName={`parallax`}
+                    >
+                        <div style={{ height: '200px' }} />
+                    </Parallax>
+                </div>
+
+                <h2 data-aos="fade-up">Restus</h2>
+
+                <p data-aos="fade-up">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium assumenda cumque delectus.</p>
 
                 <Masonry
                     photos={photos}
