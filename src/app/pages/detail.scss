@@ -44,12 +44,18 @@
 
   p {
     max-width: 720px;
-    margin: 25px auto 0;
+    margin: 25px auto;
     padding: 0 15px;
     line-height: 150%;
     font-family: 'Roboto Slab';
     font-weight: 300;
     color: #222;
+  }
+
+  .date {
+    font-size: .85em;
+    color: #888;
+    font-family: 'Muli', sans-serif;
   }
 
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import Head from 'next/head'
 import compose from 'recompose/compose'
@@ -12,6 +12,7 @@ import SwipeableViews from 'react-swipeable-views'
 import Pagination from '../components/Pagination'
 import Carousel, { Modal, ModalGateway } from 'react-images'
 import { Parallax, Background } from 'react-parallax'
+import AOS from 'aos'
 import './detail.scss'
 
 const DetailPage = ({ photos }) => {
@@ -19,6 +20,13 @@ const DetailPage = ({ photos }) => {
     const [ index, setIndex ] = useState(0)
     const [ galleryOpen, setGalleryOpen ] = useState(false)
     const [ galleryIndex, setGalleryIndex ] = useState(0)
+
+    useEffect(() => {
+        AOS.init({
+            once: true,
+            offset: 100
+        })
+    }, [])
 
     const handleSlideClick = (i) => {
         setGalleryOpen(true)
@@ -37,21 +45,25 @@ const DetailPage = ({ photos }) => {
 
             <div className="detail">
 
-                <Parallax
-                    bgImage={`https://firebasestorage.googleapis.com/v0/b/stoned-places.appspot.com/o/photos%2Fcropped%2F${photos[2].id}.jpg?alt=media`}
-                    bgImageAlt="Some alt text"
-                    strength={-100}
-                    bgClassName={`hero`}
-                    bgWidth={'100%'}
-                >
-                    <div style={{ height: '60vh' }} />
-                </Parallax>
+                <div data-aos="fade-up">
+                    <Parallax
+                        bgImage={`https://firebasestorage.googleapis.com/v0/b/stoned-places.appspot.com/o/photos%2Fcropped%2F${photos[2].id}.jpg?alt=media`}
+                        bgImageAlt="Some alt text"
+                        strength={-100}
+                        bgClassName={`hero`}
+                        bgWidth={'100%'}
+                    >
+                        <div style={{ height: '60vh' }} />
+                    </Parallax>
+                </div>
 
-                <h1 className="title">Lorem ipsum trip</h1>
+                <p className="date" data-aos="fade-up">July 4th, 2019</p>
 
-                <p className="perex">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium assumenda cumque delectus ea earum fuga id impedit, ipsum, molestiae nihil non officiis perferendis provident saepe unde ut veritatis! Ducimus, quaerat.</p>
+                <h1 className="title" data-aos="fade-up">Lorem ipsum trip</h1>
 
-                <div className="carousel-wrapper">
+                <p className="perex" data-aos="fade-up">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium assumenda cumque delectus ea earum fuga id impedit, ipsum, molestiae nihil non officiis perferendis provident saepe unde ut veritatis! Ducimus, quaerat.</p>
+
+                <div className="carousel-wrapper" data-aos="fade-up">
                     <SwipeableViews
                         className="carousel"
                         onChangeIndex={setIndex}
@@ -79,31 +91,35 @@ const DetailPage = ({ photos }) => {
                     <Pagination dots={photos.length} index={index} onIndexChange={setIndex} />
                 </div>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium assumenda cumque delectus ea earum fuga id impedit, ipsum, molestiae nihil non officiis perferendis provident saepe unde ut veritatis! Ducimus, quaerat.</p>
+                <p data-aos="fade-up">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium assumenda cumque delectus ea earum fuga id impedit, ipsum, molestiae nihil non officiis perferendis provident saepe unde ut veritatis! Ducimus, quaerat.</p>
 
-                <Parallax
-                    bgImage={`https://firebasestorage.googleapis.com/v0/b/stoned-places.appspot.com/o/photos%2Fcropped%2F${photos[5].id}.jpg?alt=media`}
-                    bgImageAlt="Some alt text"
-                    strength={100}
-                    bgClassName={`parallax`}
-                    bgWidth={'100%'}
-                >
-                    <div style={{ height: '200px' }} />
-                </Parallax>
+                <div data-aos="fade-up">
+                    <Parallax
+                        bgImage={`https://firebasestorage.googleapis.com/v0/b/stoned-places.appspot.com/o/photos%2Fcropped%2F${photos[5].id}.jpg?alt=media`}
+                        bgImageAlt="Some alt text"
+                        strength={100}
+                        bgClassName={`parallax`}
+                        bgWidth={'100%'}
+                    >
+                        <div style={{ height: '200px' }} />
+                    </Parallax>
+                </div>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium assumenda cumque delectus ea earum fuga id impedit, ipsum, molestiae nihil non officiis perferendis provident saepe unde ut veritatis! Ducimus, quaerat.</p>
+                <p data-aos="fade-up">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium assumenda cumque delectus ea earum fuga id impedit, ipsum, molestiae nihil non officiis perferendis provident saepe unde ut veritatis! Ducimus, quaerat.</p>
 
-                <Parallax
-                    bgImage={`https://firebasestorage.googleapis.com/v0/b/stoned-places.appspot.com/o/photos%2Fcropped%2F${photos[0].id}.jpg?alt=media`}
-                    bgImageAlt="Some alt text"
-                    strength={100}
-                    bgClassName={`parallax`}
-                    bgWidth={'100%'}
-                >
-                    <div style={{ height: '200px' }} />
-                </Parallax>
+                <div data-aos="fade-up">
+                    <Parallax
+                        bgImage={`https://firebasestorage.googleapis.com/v0/b/stoned-places.appspot.com/o/photos%2Fcropped%2F${photos[0].id}.jpg?alt=media`}
+                        bgImageAlt="Some alt text"
+                        strength={100}
+                        bgClassName={`parallax`}
+                        bgWidth={'100%'}
+                    >
+                        <div style={{ height: '200px' }} />
+                    </Parallax>
+                </div>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium assumenda cumque delectus ea earum fuga id impedit, ipsum, molestiae nihil non officiis perferendis provident saepe unde ut veritatis! Ducimus, quaerat.</p>
+                <p data-aos="fade-up">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium assumenda cumque delectus ea earum fuga id impedit, ipsum, molestiae nihil non officiis perferendis provident saepe unde ut veritatis! Ducimus, quaerat.</p>
 
                 <Masonry
                     photos={photos}
