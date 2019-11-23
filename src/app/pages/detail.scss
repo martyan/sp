@@ -4,14 +4,52 @@
 .detail {
 
   .carousel-wrapper {
+    max-width: 720px;
+    margin: 25px auto 0;
     position: relative;
     padding: 0 5px;
-    margin-top: 5px;
   }
 
   .carousel {
     background: #222;
     border-radius: 5px;
+  }
+
+  .hero {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .react-parallax {
+
+    max-width: 720px;
+    margin: 25px auto 0;
+
+    &:first-child {
+      margin: 0 auto;
+    }
+
+  }
+
+  .title {
+    max-width: 720px;
+    margin: 25px auto 0;
+    padding: 0 15px;
+    font-size: 1.3em;
+    //color: white;
+    //background: #333;
+    color: #333;
+    font-family: 'Roboto Slab';
+  }
+
+  p {
+    max-width: 720px;
+    margin: 25px auto 0;
+    padding: 0 15px;
+    line-height: 150%;
+    font-family: 'Roboto Slab';
+    font-weight: 300;
+    color: #222;
   }
 
 }

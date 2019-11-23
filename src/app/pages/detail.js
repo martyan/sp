@@ -11,6 +11,7 @@ import Masonry from '../components/Masonry'
 import SwipeableViews from 'react-swipeable-views'
 import Pagination from '../components/Pagination'
 import Carousel, { Modal, ModalGateway } from 'react-images'
+import { Parallax, Background } from 'react-parallax'
 import './detail.scss'
 
 const DetailPage = ({ photos }) => {
@@ -35,6 +36,20 @@ const DetailPage = ({ photos }) => {
             </Head>
 
             <div className="detail">
+
+                <Parallax
+                    bgImage={`https://firebasestorage.googleapis.com/v0/b/stoned-places.appspot.com/o/photos%2Fcropped%2F${photos[2].id}.jpg?alt=media`}
+                    bgImageAlt="Some alt text"
+                    strength={-100}
+                    bgClassName={`hero`}
+                    bgWidth={'100%'}
+                >
+                    <div style={{ height: '60vh' }} />
+                </Parallax>
+
+                <h1 className="title">Lorem ipsum trip</h1>
+
+                <p className="perex">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium assumenda cumque delectus ea earum fuga id impedit, ipsum, molestiae nihil non officiis perferendis provident saepe unde ut veritatis! Ducimus, quaerat.</p>
 
                 <div className="carousel-wrapper">
                     <SwipeableViews
@@ -63,6 +78,32 @@ const DetailPage = ({ photos }) => {
                     </SwipeableViews>
                     <Pagination dots={photos.length} index={index} onIndexChange={setIndex} />
                 </div>
+
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium assumenda cumque delectus ea earum fuga id impedit, ipsum, molestiae nihil non officiis perferendis provident saepe unde ut veritatis! Ducimus, quaerat.</p>
+
+                <Parallax
+                    bgImage={`https://firebasestorage.googleapis.com/v0/b/stoned-places.appspot.com/o/photos%2Fcropped%2F${photos[5].id}.jpg?alt=media`}
+                    bgImageAlt="Some alt text"
+                    strength={100}
+                    bgClassName={`parallax`}
+                    bgWidth={'100%'}
+                >
+                    <div style={{ height: '200px' }} />
+                </Parallax>
+
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium assumenda cumque delectus ea earum fuga id impedit, ipsum, molestiae nihil non officiis perferendis provident saepe unde ut veritatis! Ducimus, quaerat.</p>
+
+                <Parallax
+                    bgImage={`https://firebasestorage.googleapis.com/v0/b/stoned-places.appspot.com/o/photos%2Fcropped%2F${photos[0].id}.jpg?alt=media`}
+                    bgImageAlt="Some alt text"
+                    strength={100}
+                    bgClassName={`parallax`}
+                    bgWidth={'100%'}
+                >
+                    <div style={{ height: '200px' }} />
+                </Parallax>
+
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium assumenda cumque delectus ea earum fuga id impedit, ipsum, molestiae nihil non officiis perferendis provident saepe unde ut veritatis! Ducimus, quaerat.</p>
 
                 <Masonry
                     photos={photos}
