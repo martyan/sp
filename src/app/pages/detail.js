@@ -18,6 +18,9 @@ import './detail.scss'
 import CustomGalleryItem from '../components/CustomGalleryItem'
 import MapEmbed from '../components/MapEmbed'
 
+const arrow = <svg viewBox="0 0 451.7 512"> <g> <path d="M7,265.7L159.2,418c9.3,9.3,24.4,9.3,33.6,0c9.3-9.3,9.3-24.4,0-33.6L81.2,272.6h346.7c13.1,0,23.8-10.7,23.8-23.8 c0-13.1-10.7-23.8-23.8-23.8H81.2l111.7-111.7c9.3-9.3,9.3-24.4,0-33.6c-4.6-4.6-10.7-7-16.8-7c-6.1,0-12.2,2.3-16.8,7L7,232 C-2.3,241.3-2.3,256.4,7,265.7z"/> </g> </svg>
+
+
 const DetailPage = (props) => {
 
     const [ index, setIndex ] = useState(0)
@@ -61,6 +64,10 @@ const DetailPage = (props) => {
 
             <div className="detail">
 
+                <div className="arrow">
+                    {arrow}
+                </div>
+
                 <div data-aos="fade-up" onClick={() => handleSlideClick(2)}>
                     <Parallax
                         bgImage={photos[2].src}
@@ -82,9 +89,10 @@ const DetailPage = (props) => {
                 </p>
 
                 <MapEmbed />
-                
+
                 <p className="perex" data-aos="fade-up">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium assumenda cumque delectus ea earum fuga id impedit.</p>
 
+                <p data-aos="fade-up">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium assumenda cumque delectus.</p>
 
                 <div className="carousel-wrapper" data-aos="fade-up">
                     <SwipeableViews

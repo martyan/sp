@@ -20,6 +20,27 @@
     margin: 0 auto;
   }
 
+  .arrow {
+
+    position: absolute;
+    left: 15px;
+    top: 15px;
+    z-index: 999;
+    opacity: .8;
+
+    svg {
+
+      width: 24px;
+      height: 24px;
+
+      path {
+        fill: white;
+      }
+
+    }
+
+  }
+
   .react-parallax {
 
     max-width: 720px;

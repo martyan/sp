@@ -5,8 +5,8 @@ import styled from 'styled-components'
 const marker = <svg viewBox="0 0 36 48"><g><path className="dark" d="M18,0.1c0,2.8,0,6.1,0,9.9c4.9,0,8.8,4.1,8.8,9.2s-3.9,9-8.8,9c0,6.7,0,13.7,0,19.8c11-7.7,18.2-16.9,18-29.2 C35.1,9,30.6,2,19.5,0.2C19,0.1,18.6,0.1,18,0.1z"/><path className="light" d="M18,0.1c0,2.8,0,6.1,0,9.9c-4.9,0-8.8,4.1-8.8,9.2s3.9,9,8.8,9c0,6.7,0,13.7,0,19.8C7,40.3-0.2,31.1,0,18.8 C0.8,9,5.3,2,16.5,0.2C17,0.1,17.5,0.1,18,0.1z"/></g></svg>
 
 const MapEmbed = () => {
-    const defaultCenter = {lat: 49.20724370019872, lng: 16.593615532609107}
-    const defaultZoom = 11
+    const defaultCenter = {lat: 30.546320, lng: -9.707780}
+    const defaultZoom = 15
 
     const [ googleMaps, setGoogleMaps ] = useState(null)
     const [ mapCenter, setMapCenter ] = useState({...defaultCenter})
@@ -30,7 +30,7 @@ const MapEmbed = () => {
     const isInverse = mapTypeId === 'hybrid'
 
     return (
-        <MapWrapper>
+        <MapWrapper data-aos="fade-up">
             <div style={{ height: '100%', width: '100%' }}>
                 <GoogleMapReact
                     bootstrapURLKeys={{ key: process.env.GOOGLE_MAPS_API_KEY, libraries: ['places'] }}
