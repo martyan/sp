@@ -16,6 +16,7 @@ import AOS from 'aos'
 import Gallery from 'react-photo-gallery'
 import './detail.scss'
 import CustomGalleryItem from '../components/CustomGalleryItem'
+import MapEmbed from '../components/MapEmbed'
 
 const DetailPage = (props) => {
 
@@ -80,7 +81,10 @@ const DetailPage = (props) => {
                     <a>#morocco</a> <a>#surf</a> <a>#trip</a> <a>#hightimes</a>
                 </p>
 
+                <MapEmbed />
+                
                 <p className="perex" data-aos="fade-up">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium assumenda cumque delectus ea earum fuga id impedit.</p>
+
 
                 <div className="carousel-wrapper" data-aos="fade-up">
                     <SwipeableViews
