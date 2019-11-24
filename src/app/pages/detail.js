@@ -88,7 +88,26 @@ const DetailPage = (props) => {
                     <a>#morocco</a> <a>#surf</a> <a>#trip</a> <a>#hightimes</a>
                 </p>
 
-                <MapEmbed />
+                <Parallax
+                    strength={0}
+                    // bgImage={photos[5].src}
+                    renderLayer={percentage => {
+                        const value = Math.min(Math.max(percentage + 0.5, 0), 1)
+                        return (
+                            <div style={{opacity: value}}>
+                                <MapEmbed />
+                                {/*<img*/}
+                                {/*src={photos[5].src}*/}
+                                {/*style={{opacity: Math.min(Math.max(percentage + 0.5, 0.5), 1)}}*/}
+                                {/*/>*/}
+                            </div>
+                        )
+                    }}
+                >
+                    <Background>
+                        {/*<img src={photos[5].src} style={{opacity: 0}} />*/}
+                    </Background>
+                </Parallax>
 
                 <p className="perex" data-aos="fade-up">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium assumenda cumque delectus ea earum fuga id impedit.</p>
 
