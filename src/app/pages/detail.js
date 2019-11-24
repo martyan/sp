@@ -13,18 +13,33 @@ import Pagination from '../components/Pagination'
 import Carousel, { Modal, ModalGateway } from 'react-images'
 import { Parallax, Background } from 'react-parallax'
 import AOS from 'aos'
+import Gallery from 'react-photo-gallery'
 import './detail.scss'
+import CustomGalleryItem from '../components/CustomGalleryItem'
 
-const DetailPage = ({ photos }) => {
+const DetailPage = (props) => {
 
     const [ index, setIndex ] = useState(0)
     const [ galleryOpen, setGalleryOpen ] = useState(false)
     const [ galleryIndex, setGalleryIndex ] = useState(0)
 
+    const photos = props.photos.map(d => {
+        const sizes = d.ratio.split(':')
+        const width = parseInt(sizes[0])
+        const height = parseInt(sizes[1])
+
+        return ({
+            ...d,
+            width,
+            height,
+            src: `https://firebasestorage.googleapis.com/v0/b/stoned-places.appspot.com/o/photos%2Fcropped%2F${d.id}.jpg?alt=media`
+        })
+    })
+
     useEffect(() => {
         AOS.init({
             once: true,
-            offset: 100
+            offset: 50
         })
     }, [])
 
@@ -47,9 +62,9 @@ const DetailPage = ({ photos }) => {
 
                 <div data-aos="fade-up">
                     <Parallax
-                        bgImage={`https://firebasestorage.googleapis.com/v0/b/stoned-places.appspot.com/o/photos%2Fcropped%2F${photos[2].id}.jpg?alt=media`}
+                        bgImage={photos[2].src}
                         bgImageAlt="Some alt text"
-                        strength={-100}
+                        strength={150}
                         bgClassName={`hero`}
                     >
                         <div style={{ height: '60vh' }} />
@@ -80,7 +95,7 @@ const DetailPage = ({ photos }) => {
                                 onClick={() => handleSlideClick(i)}
                             >
                                 <img
-                                    src={`https://firebasestorage.googleapis.com/v0/b/stoned-places.appspot.com/o/photos%2Fcropped%2F${photo.id}.jpg?alt=media`}
+                                    src={photo.src}
                                     style={{
                                         display: 'block',
                                         width: '100%',
@@ -100,7 +115,7 @@ const DetailPage = ({ photos }) => {
 
                 <div data-aos="fade-up">
                     <Parallax
-                        bgImage={`https://firebasestorage.googleapis.com/v0/b/stoned-places.appspot.com/o/photos%2Fcropped%2F${photos[5].id}.jpg?alt=media`}
+                        bgImage={photos[5].src}
                         bgImageAlt="Some alt text"
                         strength={100}
                         bgClassName={`parallax`}
@@ -115,7 +130,7 @@ const DetailPage = ({ photos }) => {
 
                 <div data-aos="fade-up">
                     <Parallax
-                        bgImage={`https://firebasestorage.googleapis.com/v0/b/stoned-places.appspot.com/o/photos%2Fcropped%2F${photos[0].id}.jpg?alt=media`}
+                        bgImage={photos[0].src}
                         bgImageAlt="Some alt text"
                         strength={100}
                         bgClassName={`parallax`}
@@ -126,7 +141,7 @@ const DetailPage = ({ photos }) => {
 
                 <div data-aos="fade-up">
                     <Parallax
-                        bgImage={`https://firebasestorage.googleapis.com/v0/b/stoned-places.appspot.com/o/photos%2Fcropped%2F${photos[6].id}.jpg?alt=media`}
+                        bgImage={photos[6].src}
                         bgImageAlt="Some alt text"
                         strength={100}
                         bgClassName={`parallax`}
@@ -139,10 +154,29 @@ const DetailPage = ({ photos }) => {
 
                 <p data-aos="fade-up">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium assumenda cumque delectus.</p>
 
+                <div className="gallery">
+                    <Gallery
+                        photos={photos}
+                        margin={5}
+                        renderImage={CustomGalleryItem}
+                        onClick={(e, { index }) => handleSlideClick(index)}
+                        // direction={'column'}
+                        // columns={2}
+                    />
+                </div>
+
                 <Masonry
                     photos={photos}
                     setGalleryIndex={handleSlideClick}
                 />
+
+                <h2>Komentario (3)</h2>
+
+                <p>Lioreu fokum.</p>
+
+                <p>Lorem ipsum dolor sit consectetur.</p>
+
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
 
                 <ModalGateway>
                     {galleryOpen ? (
@@ -156,7 +190,7 @@ const DetailPage = ({ photos }) => {
                             }}
                         >
                             <Carousel
-                                views={photos.map(photo => ({src: `https://firebasestorage.googleapis.com/v0/b/stoned-places.appspot.com/o/photos%2Fcropped%2F${photo.id}.jpg?alt=media`}))}
+                                views={photos}
                                 currentIndex={galleryIndex}
                             />
                         </Modal>

@@ -51,6 +51,7 @@
         "react-ga": "^2.5.7",
         "react-images": "^1.0.0",
         "react-parallax": "^2.2.4",
+        "react-photo-gallery": "^8.0.0",
         "react-redux": "^7.0.3",
         "react-responsive-modal": "^4.0.1",
         "react-swipeable-views": "^0.13.3",
