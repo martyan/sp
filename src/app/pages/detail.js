@@ -32,7 +32,7 @@ const DetailPage = (props) => {
             ...d,
             width,
             height,
-            src: `https://firebasestorage.googleapis.com/v0/b/stoned-places.appspot.com/o/photos%2Fcropped%2F${d.id}.jpg?alt=media`
+            src: `https://firebasestorage.googleapis.com/v0/b/stoned-places.appspot.com/o/photos%2Fthumbs%2F320_${d.id}.jpg?alt=media`
         })
     })
 
@@ -60,12 +60,13 @@ const DetailPage = (props) => {
 
             <div className="detail">
 
-                <div data-aos="fade-up">
+                <div data-aos="fade-up" onClick={() => handleSlideClick(2)}>
                     <Parallax
                         bgImage={photos[2].src}
                         bgImageAlt="Some alt text"
                         strength={150}
                         bgClassName={`hero`}
+                        onClick={() => handleSlideClick(2)}
                     >
                         <div style={{ height: '60vh' }} />
                     </Parallax>
@@ -113,14 +114,15 @@ const DetailPage = (props) => {
 
                 <p data-aos="fade-up">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium assumenda cumque delectus ea earum fuga id impedit, ipsum, molestiae nihil non officiis perferendis provident saepe unde ut veritatis! Ducimus, quaerat.</p>
 
-                <div data-aos="fade-up">
+                <div data-aos="fade-up" onClick={() => handleSlideClick(5)}>
                     <Parallax
                         bgImage={photos[5].src}
                         bgImageAlt="Some alt text"
                         strength={100}
                         bgClassName={`parallax`}
+                        onClick={() => handleSlideClick(5)}
                     >
-                        <div style={{ height: '200px' }} />
+                        <div className="parallax-placeholder"></div>
                     </Parallax>
                 </div>
 
@@ -128,25 +130,25 @@ const DetailPage = (props) => {
 
                 <p data-aos="fade-up">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium assumenda cumque delectus ea earum fuga id impedit, ipsum, molestiae nihil non officiis.</p>
 
-                <div data-aos="fade-up">
+                <div data-aos="fade-up" onClick={() => handleSlideClick(0)}>
                     <Parallax
                         bgImage={photos[0].src}
                         bgImageAlt="Some alt text"
                         strength={100}
                         bgClassName={`parallax`}
                     >
-                        <div style={{ height: '200px' }} />
+                        <div className="parallax-placeholder"></div>
                     </Parallax>
                 </div>
 
-                <div data-aos="fade-up">
+                <div data-aos="fade-up" onClick={() => handleSlideClick(6)}>
                     <Parallax
                         bgImage={photos[6].src}
                         bgImageAlt="Some alt text"
                         strength={100}
                         bgClassName={`parallax`}
                     >
-                        <div style={{ height: '200px' }} />
+                        <div className="parallax-placeholder"></div>
                     </Parallax>
                 </div>
 

@@ -29,6 +29,16 @@
       margin: 0 auto;
     }
 
+    .parallax-placeholder {
+
+      height: 200px;
+
+      @media (min-width: $tablet) {
+        height: 280px;
+      }
+
+    }
+
   }
 
   .gallery {
