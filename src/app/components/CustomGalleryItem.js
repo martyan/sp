@@ -1,18 +1,44 @@
 import React from 'react'
 import { Parallax, Background } from 'react-parallax'
 
-const imgWithClick = { cursor: 'pointer' }
-
 const CustomGalleryItem = ({ index, onClick, photo, margin, direction, top, left }) => {
-    const imgStyle = { margin: margin }
-    if (direction === 'column') {
-        imgStyle.position = 'absolute'
-        imgStyle.left = left
-        imgStyle.top = top
-    }
 
     const handleClick = event => {
         onClick(event, { photo, index })
+    }
+
+    if(direction === 'column') {
+        return (
+            <div
+                style={{
+                    position: 'absolute',
+                    height: photo.height,
+                    width: photo.width,
+                    left,
+                    top,
+                    margin
+                }}
+                className="column-item"
+            >
+                {index % 3 === 0 ? (
+                    <Parallax
+                        bgImage={photo.src}
+                        bgImageAlt="Some alt text"
+                        strength={100}
+                        bgClassName={`parallax`}
+                    >
+                        <div className="parallax-placeholder"></div>
+                    </Parallax>
+                ) : (
+                    <img
+                        src={photo.src}
+                        width={photo.width}
+                        height={photo.height}
+                        onClick={onClick ? handleClick : null}
+                    />
+                )}
+            </div>
+        )
     }
 
     return (
@@ -22,23 +48,22 @@ const CustomGalleryItem = ({ index, onClick, photo, margin, direction, top, left
                 height: photo.height,
                 width: photo.width
             }}
-            className="gallery-item"
+            onClick={onClick ? handleClick : null}
+            className="row-item"
         >
             {index % 3 === 0 ? (
-                <div onClick={onClick ? handleClick : null}>
-                    <Parallax
-                        bgImage={photo.src}
-                        bgImageAlt="Some alt text"
-                        strength={100}
-                        bgClassName={`parallax`}
-                    >
-                        <div className="parallax-placeholder"></div>
-                    </Parallax>
-                </div>
+                <Parallax
+                    bgImage={photo.src}
+                    bgImageAlt="Some alt text"
+                    strength={100}
+                    bgClassName={`parallax`}
+                >
+                    <div className="parallax-placeholder"></div>
+                </Parallax>
             ) : (
                 <img
                     src={photo.src}
-                    style={onClick ? { ...imgStyle, ...imgWithClick } : imgStyle}
+                    style={{margin}}
                     width={photo.width}
                     height={photo.height}
                     onClick={onClick ? handleClick : null}
@@ -46,6 +71,7 @@ const CustomGalleryItem = ({ index, onClick, photo, margin, direction, top, left
             )}
         </div>
     )
+
 }
 
 export default CustomGalleryItem

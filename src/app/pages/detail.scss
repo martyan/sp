@@ -5,7 +5,7 @@
 
   .carousel-wrapper {
     max-width: 720px;
-    margin: 25px auto 0;
+    margin: 0 auto;
     position: relative;
     //padding: 0 5px;
   }
@@ -62,19 +62,12 @@
 
   }
 
-  .gallery {
-
-    max-width: 720px;
-    margin: 25px auto 0;
-    padding: 0 2.5px;
-
-    .react-parallax {
-      overflow: visible !important;
-    }
-
+  .column-item {
+    border-radius: 5px;
+    overflow: hidden;
   }
 
-  .gallery-item {
+  .row-item {
 
     border-radius: 5px;
     overflow: hidden;
@@ -85,6 +78,18 @@
       display: block;
       width: 100%;
       margin: 0 !important;
+    }
+
+  }
+
+  .gallery {
+
+    max-width: 720px;
+    margin: 25px auto 0;
+    padding: 0 2.5px;
+
+    .react-parallax {
+      overflow: visible !important;
     }
 
   }
@@ -124,7 +129,7 @@
 
   p {
     max-width: 720px;
-    margin: 25px auto;
+    margin: 0 auto;
     padding: 0 15px;
     line-height: 150%;
     font-family: 'Roboto Slab', serif;
