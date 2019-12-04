@@ -17,25 +17,25 @@ const Prlx = ({ children, src }) => {
                 strength={src ? 100 : 0}
                 bgClassName={`hero`}
                 disabled={!inView}
-                renderLayer={percentage => {
-                    const value = Math.min(Math.max(percentage * 2.5, 0), 1)
-                    return (
-                        <div
-                            style={{
-                                opacity: 1 - value,
-                                position: 'absolute',
-                                top: 0,
-                                left: 0,
-                                width: '100%',
-                                height: '100%',
-                                background: 'white',
-                                zIndex: 9999999,
-                                pointerEvents: 'none'
-                            }}
-                        >
-                        </div>
-                    )
-                }}
+                // renderLayer={percentage => {
+                //     const value = Math.min(Math.max(percentage * 5, 0), 1)
+                //     return (
+                //         <div
+                //             style={{
+                //                 opacity: 1 - value,
+                //                 position: 'absolute',
+                //                 top: 0,
+                //                 left: 0,
+                //                 width: '100%',
+                //                 height: '100%',
+                //                 background: 'white',
+                //                 zIndex: 9999999,
+                //                 pointerEvents: 'none'
+                //             }}
+                //         >
+                //         </div>
+                //     )
+                // }}
             >
                 {!!children && <Background />}
                 {children || null}

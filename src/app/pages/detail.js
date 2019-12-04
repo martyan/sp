@@ -176,18 +176,16 @@ const DetailPage = (props) => {
                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium assumenda cumque delectus.</p>
                 </Prlx>
 
-                <Prlx>
-                    <div className="gallery">
-                        <Gallery
-                            photos={photos}
-                            margin={5}
-                            renderImage={CustomGalleryItem}
-                            onClick={(e, { index }) => handleSlideClick(index)}
-                            // direction={'column'}
-                            // columns={2}
-                        />
-                    </div>
-                </Prlx>
+                <div className="gallery">
+                    <Gallery
+                        photos={photos}
+                        margin={5}
+                        renderImage={CustomGalleryItem}
+                        onClick={(e, { index }) => handleSlideClick(index)}
+                        // direction={'column'}
+                        // columns={2}
+                    />
+                </div>
 
                 <div className="gallery">
                     <Gallery

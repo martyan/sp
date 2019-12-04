@@ -1,5 +1,5 @@
 import React from 'react'
-import { Parallax, Background } from 'react-parallax'
+import Prlx from './Prlx'
 
 const CustomGalleryItem = ({ index, onClick, photo, margin, direction, top, left }) => {
 
@@ -21,21 +21,16 @@ const CustomGalleryItem = ({ index, onClick, photo, margin, direction, top, left
                 className="column-item"
             >
                 {index % 3 === 0 ? (
-                    <Parallax
-                        bgImage={photo.src}
-                        bgImageAlt="Some alt text"
-                        strength={100}
-                        bgClassName={`parallax`}
-                    >
-                        <div className="parallax-placeholder"></div>
-                    </Parallax>
+                    <Prlx src={photo.src} />
                 ) : (
-                    <img
-                        src={photo.src}
-                        width={photo.width}
-                        height={photo.height}
-                        onClick={onClick ? handleClick : null}
-                    />
+                    <Prlx>
+                        <img
+                            src={photo.src}
+                            width={photo.width}
+                            height={photo.height}
+                            onClick={onClick ? handleClick : null}
+                        />
+                    </Prlx>
                 )}
             </div>
         )
@@ -52,22 +47,17 @@ const CustomGalleryItem = ({ index, onClick, photo, margin, direction, top, left
             className="row-item"
         >
             {index % 3 === 0 ? (
-                <Parallax
-                    bgImage={photo.src}
-                    bgImageAlt="Some alt text"
-                    strength={100}
-                    bgClassName={`parallax`}
-                >
-                    <div className="parallax-placeholder"></div>
-                </Parallax>
+                <Prlx src={photo.src} />
             ) : (
-                <img
-                    src={photo.src}
-                    style={{margin}}
-                    width={photo.width}
-                    height={photo.height}
-                    onClick={onClick ? handleClick : null}
-                />
+                <Prlx>
+                    <img
+                        src={photo.src}
+                        style={{margin}}
+                        width={photo.width}
+                        height={photo.height}
+                        onClick={onClick ? handleClick : null}
+                    />
+                </Prlx>
             )}
         </div>
     )

@@ -85,7 +85,7 @@ const Home = ({ createPhoto, getPhoto, uploadFile, user }) => {
                         openEditor={() => setEditorVisible(true)}
                     />
 
-                    {/*<Button className="location" onClick={() => setMapVisible(true)}>Choose location <i className="fa fa-map-marker"></i></Button>*/}
+                    <Button className="location" onClick={() => setMapVisible(true)}>Choose location <i className="fa fa-map-marker"></i></Button>
 
                     {/*<TextArea placeholder="Caption" value={caption} onChange={setCaption}/>*/}
 
