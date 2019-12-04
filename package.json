@@ -50,6 +50,7 @@
         "react-flip-move": "^3.0.3",
         "react-ga": "^2.5.7",
         "react-images": "^1.0.0",
+        "react-intersection-observer": "^8.25.2",
         "react-parallax": "^2.2.4",
         "react-photo-gallery": "^8.0.0",
         "react-redux": "^7.0.3",

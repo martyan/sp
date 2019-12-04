@@ -44,11 +44,6 @@
   .react-parallax {
 
     max-width: 720px;
-    margin: 25px auto 0;
-
-    &:first-child {
-      margin: 0 auto;
-    }
 
     .parallax-placeholder {
 
@@ -129,7 +124,7 @@
 
   p {
     max-width: 720px;
-    margin: 0 auto;
+    margin: 25px auto 0;
     padding: 0 15px;
     line-height: 150%;
     font-family: 'Roboto Slab', serif;
@@ -142,6 +137,16 @@
     font-size: .85em;
     color: #888;
     font-family: 'Muli', sans-serif;
+  }
+
+  .custom-wrapper {
+    background: black;
+    overflow: hidden;
+  }
+
+  .custom-class {
+    margin: 0;
+    background: pink;
   }
 
 }

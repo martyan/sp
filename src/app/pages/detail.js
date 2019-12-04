@@ -16,6 +16,7 @@ import Gallery from 'react-photo-gallery'
 import './detail.scss'
 import CustomGalleryItem from '../components/CustomGalleryItem'
 import MapEmbed from '../components/MapEmbed'
+import Prlx from '../components/Prlx'
 
 const arrow = <svg viewBox="0 0 451.7 512"> <g> <path d="M7,265.7L159.2,418c9.3,9.3,24.4,9.3,33.6,0c9.3-9.3,9.3-24.4,0-33.6L81.2,272.6h346.7c13.1,0,23.8-10.7,23.8-23.8 c0-13.1-10.7-23.8-23.8-23.8H81.2l111.7-111.7c9.3-9.3,9.3-24.4,0-33.6c-4.6-4.6-10.7-7-16.8-7c-6.1,0-12.2,2.3-16.8,7L7,232 C-2.3,241.3-2.3,256.4,7,265.7z"/> </g> </svg>
 
@@ -67,7 +68,7 @@ const DetailPage = (props) => {
                     {arrow}
                 </div>
 
-                <div data-aos="fade-up" onClick={() => handleSlideClick(2)}>
+                <div onClick={() => handleSlideClick(2)}>
                     <Parallax
                         bgImage={photos[2].src}
                         bgImageAlt="Some alt text"
@@ -79,237 +80,114 @@ const DetailPage = (props) => {
                     </Parallax>
                 </div>
 
-                <p className="date" data-aos="fade-up">July 4th, 2019</p>
+                <p className="date">July 4th, 2019</p>
 
-                <h1 className="title" data-aos="fade-up">Lorem ipsum trip</h1>
+                <h1 className="title">Lorem ipsum trip</h1>
 
-                <p className="tags" data-aos="fade-up">
-                    <a>#morocco</a> <a>#surf</a> <a>#trip</a> <a>#hightimes</a>
-                </p>
+                <Prlx>
+                    <p className="tags">
+                        <a>#morocco</a> <a>#surf</a> <a>#trip</a> <a>#hightimes</a>
+                    </p>
+                </Prlx>
 
-                <div data-aos="fade-up">
-                    <Parallax
-                        strength={0}
-                        // bgImage={photos[5].src}
-                        renderLayer={percentage => {
-                            const value = Math.min(Math.max(percentage * 2.5, 0), 1)
-                            return (
-                                <div style={{opacity: value}}>
-                                    <MapEmbed />
-                                    {/*<img*/}
-                                    {/*src={photos[5].src}*/}
-                                    {/*style={{opacity: Math.min(Math.max(percentage + 0.5, 0.5), 1)}}*/}
-                                    {/*/>*/}
+                <Prlx>
+                    <MapEmbed />
+                </Prlx>
+
+                <Prlx>
+                    <p className="perex">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium assumenda cumque delectus ea earum fuga id impedit.</p>
+                </Prlx>
+
+                <Prlx>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium assumenda cumque delectus.</p>
+                </Prlx>
+
+                <Prlx>
+                    <div className="carousel-wrapper">
+                        <SwipeableViews
+                            className="carousel"
+                            onChangeIndex={setIndex}
+                            index={index}
+                            enableMouseEvents
+                            resistance
+                        >
+                            {photos.map((photo, i) => (
+                                <div
+                                    key={photo.id}
+                                    onClick={() => handleSlideClick(i)}
+                                >
+                                    <img
+                                        src={photo.src}
+                                        style={{
+                                            display: 'block',
+                                            width: '100%',
+                                            height: '200px',
+                                            objectFit: 'contain'
+                                        }}
+                                    />
                                 </div>
-                            )
-                        }}
-                    >
-                        <Background>
-                            {/*<img src={photos[5].src} style={{opacity: 0}} />*/}
-                        </Background>
-                    </Parallax>
+                            ))}
+                        </SwipeableViews>
+                        <Pagination dots={photos.length} index={index} onIndexChange={setIndex} />
+                    </div>
+                </Prlx>
+
+                <Prlx>
+                    <h2>Plotum</h2>
+                </Prlx>
+
+                <Prlx>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium assumenda cumque delectus ea earum fuga id impedit, ipsum, molestiae nihil non officiis perferendis provident saepe unde ut veritatis! Ducimus, quaerat.</p>
+                </Prlx>
+
+                <Prlx>
+                    <h2>Lipsum amet</h2>
+                </Prlx>
+
+                <Prlx>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium assumenda cumque delectus ea earum fuga id impedit, ipsum, molestiae nihil non officiis.</p>
+                </Prlx>
+
+                <div onClick={() => handleSlideClick(5)}>
+                    <Prlx src={photos[5].src} />
                 </div>
 
-                <Parallax
-                    strength={0}
-                    renderLayer={percentage => {
-                        const value = Math.min(Math.max(percentage * 2.5, 0), 1)
-                        return (
-                            <div style={{opacity: value}}>
-                                <p className="perex" data-aos="fade-up">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium assumenda cumque delectus ea earum fuga id impedit.</p>
-                            </div>
-                        )
-                    }}
-                >
-                    <Background></Background>
-                </Parallax>
+                <Prlx>
+                    <h2>Lipsum amet</h2>
+                </Prlx>
 
-                <Parallax
-                    strength={0}
-                    renderLayer={percentage => {
-                        const value = Math.min(Math.max(percentage * 2.5, 0), 1)
-                        return (
-                            <div style={{opacity: value}}>
-                                <p data-aos="fade-up">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium assumenda cumque delectus.</p>
-                            </div>
-                        )
-                    }}
-                >
-                    <Background></Background>
-                </Parallax>
+                <Prlx>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium assumenda cumque delectus ea earum fuga id impedit, ipsum, molestiae nihil non officiis.</p>
+                </Prlx>
 
-                <Parallax
-                    strength={0}
-                    renderLayer={percentage => {
-                        const value = Math.min(Math.max(percentage * 2.5, 0), 1)
-                        return (
-                            <div style={{opacity: value}}>
-                                <div className="carousel-wrapper" data-aos="fade-up">
-                                    <SwipeableViews
-                                        className="carousel"
-                                        onChangeIndex={setIndex}
-                                        index={index}
-                                        enableMouseEvents
-                                        resistance
-                                    >
-                                        {photos.map((photo, i) => (
-                                            <div
-                                                key={photo.id}
-                                                onClick={() => handleSlideClick(i)}
-                                            >
-                                                <img
-                                                    src={photo.src}
-                                                    style={{
-                                                        display: 'block',
-                                                        width: '100%',
-                                                        height: '200px',
-                                                        objectFit: 'contain'
-                                                    }}
-                                                />
-                                            </div>
-                                        ))}
-                                    </SwipeableViews>
-                                    <Pagination dots={photos.length} index={index} onIndexChange={setIndex} />
-                                </div>
-                            </div>
-                        )
-                    }}
-                >
-                    <Background></Background>
-                </Parallax>
-
-                <Parallax
-                    strength={0}
-                    renderLayer={percentage => {
-                        const value = Math.min(Math.max(percentage * 2.5, 0), 1)
-                        return (
-                            <div style={{opacity: value}}>
-                                <h2 data-aos="fade-up">Plotum</h2>
-                            </div>
-                        )
-                    }}
-                >
-                    <Background></Background>
-                </Parallax>
-
-                <Parallax
-                    strength={0}
-                    renderLayer={percentage => {
-                        const value = Math.min(Math.max(percentage * 2.5, 0), 1)
-                        return (
-                            <div style={{opacity: value}}>
-                                <p data-aos="fade-up">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium assumenda cumque delectus ea earum fuga id impedit, ipsum, molestiae nihil non officiis perferendis provident saepe unde ut veritatis! Ducimus, quaerat.</p>
-                            </div>
-                        )
-                    }}
-                >
-                    <Background></Background>
-                </Parallax>
-
-                <Parallax
-                    strength={0}
-                    renderLayer={percentage => {
-                        const value = Math.min(Math.max(percentage * 2.5, 0), 1)
-                        return (
-                            <div style={{opacity: value}}>
-                                <h2 data-aos="fade-up">Lipsum amet</h2>
-                            </div>
-                        )
-                    }}
-                >
-                    <Background></Background>
-                </Parallax>
-
-                <Parallax
-                    strength={0}
-                    renderLayer={percentage => {
-                        const value = Math.min(Math.max(percentage * 2.5, 0), 1)
-                        return (
-                            <div style={{opacity: value}}>
-                                <p data-aos="fade-up">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium assumenda cumque delectus ea earum fuga id impedit, ipsum, molestiae nihil non officiis.</p>
-                            </div>
-                        )
-                    }}
-                >
-                    <Background></Background>
-                </Parallax>
-
-                <div data-aos="fade-up" onClick={() => handleSlideClick(5)}>
-                    <Parallax
-                        bgImage={photos[5].src}
-                        bgImageAlt="Some alt text"
-                        strength={100}
-                        bgClassName={`parallax`}
-                        onClick={() => handleSlideClick(5)}
-                    >
-                        <div className="parallax-placeholder"></div>
-                    </Parallax>
+                <div onClick={() => handleSlideClick(0)}>
+                    <Prlx src={photos[0].src} />
                 </div>
 
-                <Parallax
-                    strength={0}
-                    renderLayer={percentage => {
-                        const value = Math.min(Math.max(percentage * 2.5, 0), 1)
-                        return (
-                            <div style={{opacity: value}}>
-                                <h2 data-aos="fade-up">Lipsum amet</h2>
-                            </div>
-                        )
-                    }}
-                >
-                    <Background></Background>
-                </Parallax>
-
-                <Parallax
-                    strength={0}
-                    renderLayer={percentage => {
-                        const value = Math.min(Math.max(percentage * 2.5, 0), 1)
-                        return (
-                            <div style={{opacity: value}}>
-                                <p data-aos="fade-up">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium assumenda cumque delectus ea earum fuga id impedit, ipsum, molestiae nihil non officiis.</p>
-                            </div>
-                        )
-                    }}
-                >
-                    <Background></Background>
-                </Parallax>
-
-                <div data-aos="fade-up" onClick={() => handleSlideClick(0)}>
-                    <Parallax
-                        bgImage={photos[0].src}
-                        bgImageAlt="Some alt text"
-                        strength={100}
-                        bgClassName={`parallax`}
-                    >
-                        <div className="parallax-placeholder"></div>
-                    </Parallax>
+                <div onClick={() => handleSlideClick(6)}>
+                    <Prlx src={photos[6].src} />
                 </div>
 
-                <div data-aos="fade-up" onClick={() => handleSlideClick(6)}>
-                    <Parallax
-                        bgImage={photos[6].src}
-                        bgImageAlt="Some alt text"
-                        strength={100}
-                        bgClassName={`parallax`}
-                    >
-                        <div className="parallax-placeholder"></div>
-                    </Parallax>
-                </div>
+                <Prlx>
+                    <h2>Restus</h2>
+                </Prlx>
 
-                <h2 data-aos="fade-up">Restus</h2>
+                <Prlx>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium assumenda cumque delectus.</p>
+                </Prlx>
 
-                <p data-aos="fade-up">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium assumenda cumque delectus.</p>
-
-                <div className="gallery">
-                    <Gallery
-                        photos={photos}
-                        margin={5}
-                        renderImage={CustomGalleryItem}
-                        onClick={(e, { index }) => handleSlideClick(index)}
-                        // direction={'column'}
-                        // columns={2}
-                    />
-                </div>
+                <Prlx>
+                    <div className="gallery">
+                        <Gallery
+                            photos={photos}
+                            margin={5}
+                            renderImage={CustomGalleryItem}
+                            onClick={(e, { index }) => handleSlideClick(index)}
+                            // direction={'column'}
+                            // columns={2}
+                        />
+                    </div>
+                </Prlx>
 
                 <div className="gallery">
                     <Gallery
