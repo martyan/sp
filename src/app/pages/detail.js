@@ -36,7 +36,7 @@ const DetailPage = (props) => {
             ...d,
             width,
             height,
-            src: `https://firebasestorage.googleapis.com/v0/b/stoned-places.appspot.com/o/photos%2Fthumbs%2F320_${d.id}.jpg?alt=media`
+            src: `https://firebasestorage.googleapis.com/v0/b/stoned-places.appspot.com/o/photos%2Fcropped%2F${d.id}.jpg?alt=media`
         })
     })
 

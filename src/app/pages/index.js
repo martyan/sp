@@ -28,18 +28,35 @@ const Home = ({ createPhoto, getPhoto, uploadFile, user }) => {
     const [ img, setImg ] = useState(null)
     const [ croppedArea, setCroppedArea ] = useState(null)
     const [ ratio, setRatio ] = useState(defaultRatio)
+    const [ errors, setErrors ] = useState([])
+    const [ location, setLocation ] = useState(null)
 
     const handleSubmit = (e) => {
         e.preventDefault()
 
+        setErrors([])
+
+        let errors = []
+        if(!img) errors.push({ type: 'editor', msg: 'No img' })
+        else if(!croppedArea) errors.push({ type: 'editor', msg: 'No cropped area' })
+        else if(!ratio) errors.push({ type: 'editor', msg: 'No ratio' })
+
+        if(!location) errors.push({ type: 'location', msg: 'No location' })
+
+        setErrors(errors)
+
+        if(errors.length > 0) return false
+
         const data = {
             croppedArea,
-            ratio
+            ratio,
+            caption,
+            location
         }
 
         createPhoto(data)
             .then(ref => getUploadPromise(files[0], ref.id))
-            .then(console.log)
+            .then(() => window.location.reload())
             // .then(ref => getPhoto(ref.id))
             .catch(console.error)
     }
@@ -67,6 +84,17 @@ const Home = ({ createPhoto, getPhoto, uploadFile, user }) => {
         setRatio(ratio)
     }
 
+    const handleLocationChange = (location) => {
+        setLocation(location)
+        setMapVisible(false)
+    }
+
+    const getError = (type) => {
+        const error = errors.find(error => error.type === type)
+        if(error) return error.msg
+        return ''
+    }
+
     return (
         <PageWrapper>
             <Head>
@@ -87,9 +115,40 @@ const Home = ({ createPhoto, getPhoto, uploadFile, user }) => {
 
                     <Button className="location" onClick={() => setMapVisible(true)}>Choose location <i className="fa fa-map-marker"></i></Button>
 
-                    {/*<TextArea placeholder="Caption" value={caption} onChange={setCaption}/>*/}
+                    <TextArea
+                        placeholder="Caption"
+                        value={caption}
+                        onChange={setCaption}
+                        error={getError('caption')}
+                    />
 
                     {/*<TextInput placeholder="Tags" value={tags} onChange={setTags}/>*/}
+
+                    {errors.length > 0 && (
+                        <div className="errors">
+                            {errors.map((e, i) => <div key={i} className="error">{e.msg}</div>)}
+                        </div>
+                    )}
+
+                    {/*<label>*/}
+                        {/*<input type="checkbox" />*/}
+                        {/*<span className="label">Forest</span>*/}
+                    {/*</label>*/}
+
+                    {/*<label>*/}
+                        {/*<input type="checkbox" />*/}
+                        {/*<span className="label">Water</span>*/}
+                    {/*</label>*/}
+
+                    {/*<label>*/}
+                        {/*<input type="checkbox" />*/}
+                        {/*<span className="label">Mountains</span>*/}
+                    {/*</label>*/}
+
+                    {/*<label>*/}
+                        {/*<input type="checkbox" />*/}
+                        {/*<span className="label">Streets</span>*/}
+                    {/*</label>*/}
 
                     <Button className="done">Done</Button>
 
@@ -120,7 +179,7 @@ const Home = ({ createPhoto, getPhoto, uploadFile, user }) => {
                     classNames={{modal: 'no-padding', overlay: 'no-padding'}}
                     noPadding
                 >
-                    <Map />
+                    <Map onChange={handleLocationChange} />
                 </Modal>
 
             </div>

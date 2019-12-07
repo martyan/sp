@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import PropTypes from 'prop-types'
 import GoogleMapReact from 'google-map-react'
 import axios from 'axios'
 import styled from 'styled-components'
@@ -8,7 +9,7 @@ import Autocomplete from './Autocomplete'
 const marker = <svg viewBox="0 0 36 48"><g><path className="dark" d="M18,0.1c0,2.8,0,6.1,0,9.9c4.9,0,8.8,4.1,8.8,9.2s-3.9,9-8.8,9c0,6.7,0,13.7,0,19.8c11-7.7,18.2-16.9,18-29.2 C35.1,9,30.6,2,19.5,0.2C19,0.1,18.6,0.1,18,0.1z"/><path className="light" d="M18,0.1c0,2.8,0,6.1,0,9.9c-4.9,0-8.8,4.1-8.8,9.2s3.9,9,8.8,9c0,6.7,0,13.7,0,19.8C7,40.3-0.2,31.1,0,18.8 C0.8,9,5.3,2,16.5,0.2C17,0.1,17.5,0.1,18,0.1z"/></g></svg>
 const crosshair = <svg viewBox="0 0 468.076 468.076"><g><polygon points="32.514,32.514 104.216,32.514 104.216,0 0,0 0,104.216 32.514,104.216"/><polygon points="468.076,0 363.859,0 363.859,32.514 435.562,32.514 435.562,104.216 468.076,104.216"/><polygon points="0,468.076 104.216,468.076 104.216,435.562 32.514,435.562 32.514,363.859 0,363.859"/><polygon points="435.562,435.562 363.859,435.562 363.859,468.076 468.076,468.076 468.076,363.859 435.562,363.859"/><circle cx="234.038" cy="234.038" r="20.809"/></g></svg>
 
-const Map = () => {
+const Map = ({ onChange }) => {
     const defaultCenter = {lat: 49.20724370019872, lng: 16.593615532609107}
     const defaultZoom = 3
 
@@ -119,6 +120,11 @@ const Map = () => {
 
     const isInverse = mapTypeId === 'hybrid'
 
+    const handleDone = () => {
+        if(reviewing) return onChange(location)
+        return placeMarker()
+    }
+
     return (
         <MapWrapper>
             <Crosshair visible={!reviewing} inverse={isInverse}>
@@ -126,7 +132,7 @@ const Map = () => {
             </Crosshair>
 
             {true /*userHasMovedMap()*/ && (
-                <Done onClick={placeMarker} inverse={isInverse}>
+                <Done onClick={handleDone} inverse={isInverse}>
                     <i className="fa fa-check"></i>
                 </Done>
             )}
@@ -196,6 +202,10 @@ const Map = () => {
 }
 
 export default Map
+
+Map.propTypes = {
+    onChange: PropTypes.func.isRequired
+}
 
 const MapWrapper = styled.div`
     position: relative;
