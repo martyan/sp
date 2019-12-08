@@ -4,6 +4,24 @@
 
     margin: 0 0 15px;
 
+    &.error {
+
+      .wrapper {
+        background: rgba(indianred, .1);
+      }
+
+      textarea {
+
+        color: indianred;
+
+        &::placeholder {
+          color: indianred;
+        }
+
+      }
+
+    }
+
     .wrapper {
         padding: 15px;
         background: #f6f6f6;
@@ -28,9 +46,9 @@
     }
 
     .error {
-        color: indianred;
-        padding: 5px;
-        font-size: .95em;
+        color: rgba(indianred, .8);
+        padding: 5px 15px;
+        font-size: .85em;
     }
 
 }

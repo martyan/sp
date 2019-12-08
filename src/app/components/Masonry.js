@@ -59,11 +59,13 @@ const Masonry = ({ photos, setGalleryIndex }) => {
         }
     })
 
+    console.log(data)
+
     return (
         <div style={{
             width: '100%',
             maxWidth: '720px',
-            margin: '25px auto 0',
+            margin: '0 auto',
             padding: '0 5px'
         }}>
             <Masonic

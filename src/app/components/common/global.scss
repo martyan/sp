@@ -15,3 +15,33 @@ html, body {
     box-sizing: border-box;
     outline: none;
 }
+
+.head {
+
+  position: relative;
+  margin-bottom: 23px;
+
+  h1 {
+    text-align: center;
+    font-weight: 700;
+    font-family: 'Roboto Slab', serif;
+    font-size: 1.3em;
+    margin: 0;
+  }
+
+  .add {
+    position: absolute;
+    right: 0;
+    top: -1px;
+    font-size: 1.5em;
+    font-family: 'Roboto Slab', serif;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    border: 2px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+}

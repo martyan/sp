@@ -64,7 +64,7 @@ class TextArea extends Component {
         const { rows } = this.state
 
         return (
-            <div className="text-area">
+            <div className={error.length ? 'text-area error' : 'text-area'}>
 
                 <div className="wrapper">
                     <textarea
