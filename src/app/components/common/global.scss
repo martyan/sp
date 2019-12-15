@@ -19,7 +19,6 @@ html, body {
 .head {
 
   position: relative;
-  margin-bottom: 23px;
 
   h1 {
     text-align: center;
@@ -27,11 +26,12 @@ html, body {
     font-family: 'Roboto Slab', serif;
     font-size: 1.3em;
     margin: 0;
+    letter-spacing: -0.5px;
   }
 
   .add {
     position: absolute;
-    right: 0;
+    right: 10px;
     top: -1px;
     font-size: 1.5em;
     font-family: 'Roboto Slab', serif;

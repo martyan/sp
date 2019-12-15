@@ -3,32 +3,32 @@
 
 .index {
 
-    padding: 15px;
-    min-height: 100%;
+  padding: 15px 0;
+  min-height: 100%;
 
-    form {
-        display: block;
-        width: 100%;
-        max-width: 420px;
-        margin: 0 auto;
+  form {
+    display: block;
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+  }
+
+  button.location {
+
+    position: relative;
+
+    i {
+      position: absolute;
+      top: 8px;
+      right: 5%;
+      font-size: 1.4em;
     }
 
-    button.location {
+  }
 
-        position: relative;
+  button.done {
 
-        i {
-            position: absolute;
-            top: 8px;
-            right: 5%;
-            font-size: 1.4em;
-        }
-
-    }
-
-    button.done {
-
-    }
+  }
 
 }
 

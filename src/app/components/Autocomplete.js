@@ -121,7 +121,7 @@ const Autocomplete = ({ maps, map, onPlaceSelect, inverse, blurSignal }) => {
 
         const request = {
             placeId: prediction.place_id,
-            fields: ['geometry']
+            // fields: ['geometry']
         }
 
         const service = new maps.places.PlacesService(map);

@@ -121,7 +121,7 @@ const Map = ({ onChange }) => {
     const isInverse = mapTypeId === 'hybrid'
 
     const handleDone = () => {
-        if(reviewing) return onChange(location)
+        if(reviewing) return onChange({...location, ...mapCenter})
         return placeMarker()
     }
 

@@ -10,6 +10,7 @@ import PageWrapper from '../components/PageWrapper'
 import Masonry from '../components/Masonry'
 import AddPhoto from '../components/AddPhoto'
 import Loading from '../components/Loading'
+import ExploreMap from '../components/ExploreMap'
 import './index.scss'
 
 
@@ -22,8 +23,6 @@ const Home = ({ user, photos }) => {
         const timer = setTimeout(() => setIsLoading(false), 4000)
         return () => clearTimeout(timer)
     }, [])
-
-    console.log(photos)
 
     return (
         <PageWrapper>
@@ -41,7 +40,16 @@ const Home = ({ user, photos }) => {
                     <h1>Stoned Places</h1>
                     <a className="add" onClick={() => setIsAdding(!isAdding)}>+</a>
                 </div>
-                {isAdding ? <AddPhoto /> : <Masonry photos={photos} />}
+
+                {(isAdding || !photos.length) ?
+                    <AddPhoto /> :
+                    <>
+                        <ExploreMap data={photos} />
+                        <Masonry photos={photos} />
+                    </>
+                }
+
+                <a href="/detail">Detail</a>
 
             </div>
         </PageWrapper>
@@ -64,7 +72,7 @@ Home.propTypes = {
 
 const mapStateToProps = (state) => ({
     user: state.auth.user,
-    photos: state.app.photos
+    photos: [...state.app.photos, ...state.app.photos, ...state.app.photos, ...state.app.photos, ...state.app.photos]
 })
 
 const mapDispatchToProps = (dispatch) => (
