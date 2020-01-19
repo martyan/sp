@@ -27,7 +27,7 @@ const Modal = ({ visible, onClose, classNames, children}) => {
             open={visible}
             onClose={onClose ? onClose : () => {}}
             classNames={mergedClassNames}
-            showCloseIcon={false}
+            showCloseIcon={true}
             center
         >
             {children}
