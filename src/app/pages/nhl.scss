@@ -3,32 +3,313 @@
 
 .nhl {
 
-  ul {
+  min-height: 100vh;
 
+  ul {
     list-style-type: none;
     padding: 0;
     margin: 0;
+  }
 
-    li {
+  .search {
 
-      display: flex;
-      align-items: center;
+    position: relative;
+
+    input {
+      display: block;
+      width: 100%;
+      height: 50px;
+      background: #eee;
       padding: 15px;
+      border: 0;
+      font-size: 1.1em;
+      font-weight: 300;
+    }
 
-      .logo {
-        width: 40px;
-        max-height: 40px;
-        margin-right: 10px;
-      }
+    .clear {
 
-      .name {
-        font-weight: 500;
-        font-size: 1.1em;
+      position: absolute;
+      right: 10px;
+      top: 14px;
+      width: 26px;
+      height: 26px;
+      padding: 0;
+
+      svg {
+
+        display: block;
+        width: 100%;
+
+        path {
+          fill: #aaa;
+        }
+
       }
 
     }
 
   }
+
+  .team, .player {
+
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+
+    .avatar {
+
+      position: relative;
+      flex: 0 0 50px;
+      margin-right: 15px;
+
+      img.photo {
+        display: block;
+        width: 50px;
+        max-height: 50px;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+
+      img.badge {
+        position: absolute;
+        bottom: -5px;
+        right: -5px;
+        display: block;
+        width: 24px;
+        height: 24px;
+      }
+
+    }
+
+    .info {
+
+      flex: 1;
+
+      .top {
+
+        display: flex;
+        justify-content: space-between;
+
+        .name {
+          color: #222;
+          font-size: 1.05em;
+          margin-bottom: 3px;
+        }
+
+        .number {
+          color: #aaa;
+          font-weight: 600;
+        }
+
+      }
+
+      .position {
+        text-transform: uppercase;
+        font-size: .8em;
+        font-weight: 300;
+        color: #888;
+      }
+
+      .conference {
+        text-transform: uppercase;
+        font-size: .7em;
+        font-weight: 300;
+        color: #aaa;
+      }
+
+    }
+
+  }
+
+  .team-feed {
+
+    .detail {
+
+      display: flex;
+      align-items: center;
+      padding: 15px;
+      border-bottom: 1px solid #eee;
+
+      .logo {
+        display: block;
+        flex: 0 0 50px;
+        max-width: 50px;
+        max-height: 50px;
+        margin-right: 10px;
+      }
+
+      .info {
+
+        flex: 1;
+
+        .name {
+          color: #222;
+          font-size: 1.05em;
+          margin-bottom: 3px;
+        }
+
+        .conference {
+          text-transform: uppercase;
+          font-size: .7em;
+          font-weight: 300;
+          color: #aaa;
+        }
+
+      }
+
+    }
+
+    .schedule {
+
+      display: flex;
+      padding: 15px;
+      border-bottom: 1px solid #eee;
+
+      .game {
+
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        position: relative;
+
+        &:before {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 48px;
+          //transform: rotate(-90deg);
+          color: #ccc;
+          text-transform: uppercase;
+          font-size: .7em;
+          //transform-origin: left center;
+        }
+
+        &.last:before {
+          content: 'Last game';
+        }
+
+        &.next:before {
+          content: 'Next game';
+        }
+
+        .teams {
+
+          display: flex;
+
+          img {
+            display: block;
+            margin: 0 5px;
+            width: 26px;
+            height: 26px;
+          }
+
+        }
+
+        .score {
+          margin-top: 5px;
+          font-weight: 500;
+          color: #666;
+          font-size: .95em;
+          letter-spacing: 2px;
+        }
+
+        .date {
+          margin-top: 5px;
+          font-weight: 300;
+          color: #aaa;
+          font-size: .85em;
+        }
+
+      }
+
+    }
+
+    .team-standings {
+
+      padding: 30px 15px 15px;
+      width: 100%;
+      overflow: auto;
+
+      table {
+        table-layout: fixed;
+        border-collapse: collapse;
+      }
+
+      thead {
+
+        font-size: .7em;
+        color: #666;
+        font-weight: 300;
+
+        tr {
+
+          td {
+
+            position: relative;
+            min-width: 20px;
+            height: 60px;
+
+            span {
+              position: absolute;
+              top: calc(100% - 5px);
+              left: 50%;
+              display: flex;
+              align-items: center;
+              width: 80px;
+              height: 20px;
+              transform: rotate(-70deg) translate(0, -50%);
+              transform-origin: left top;
+              line-height: 100%;
+            }
+
+          }
+
+        }
+
+      }
+
+      tbody {
+
+        font-size: .8em;
+        color: #222;
+
+        tr {
+
+          td {
+
+            padding: 4px;
+            text-align: center;
+
+            &:nth-child(even) {
+              background: #eee;
+            }
+
+          }
+
+        }
+
+      }
+
+    }
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   .player-feed {
 
