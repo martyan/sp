@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import PropTypes from 'prop-types'
 import Head from 'next/head'
 import compose from 'recompose/compose'
@@ -12,6 +12,7 @@ import { useDebounce } from 'use-debounce'
 import PlayerFeed from './nhl/PlayerFeed'
 import TeamFeed from './nhl/TeamFeed'
 import Modal from '../components/common/Modal'
+import { Player, sortByPoints } from './nhl/Roster'
 import './nhl.scss'
 
 const sortTeamsByName = (teams) => {
@@ -24,6 +25,7 @@ const sortTeamsByName = (teams) => {
 
 const NHLgram = ({ user }) => {
 
+    const searchRef = useRef(null)
     const [ searchStr, setSearchStr ] = useState('')
     const [ searchFocused, setSearchFocused ] = useState(false)
     const [ teams, setTeams ] = useState([])
@@ -32,21 +34,20 @@ const NHLgram = ({ user }) => {
     const [ activeMedia, setActiveMedia ] = useState(null)
     const [ debouncedSearchStr ] = useDebounce(searchStr, 250);
 
-    const allPlayers = teams.reduce((acc, currVal) => {
+    const allPlayers = sortByPoints(teams.reduce((acc, currVal) => {
         const roster = currVal.roster.roster.map(roster => ({...roster, teamId: currVal.id}))
         return [...acc, ...roster]
-    }, [])
+    }, []))
+
+    // const sorted = sortByPoints(roster)
 
     useEffect(() => {
-        axios.get('https://statsapi.web.nhl.com/api/v1/teams?expand=team.roster')
+        axios.get('https://statsapi.web.nhl.com/api/v1/teams?hydrate=roster(person(stats(splits=statsSingleSeason)))')
             .then(response => setTeams(sortTeamsByName(response.data.teams)))
             .catch(console.error)
     }, [])
 
-    const team = teams.find(team => team.id === activeTeam)
-
-    // console.log(teams)
-    // console.log(allPlayers)
+    console.log(allPlayers)
 
     const search = debouncedSearchStr.trim().toLowerCase()
 
@@ -64,17 +65,24 @@ const NHLgram = ({ user }) => {
     const playerSearchCondition = (player) => {
         const name = player.person.fullName.toLowerCase()
         const position = player.position.abbreviation.toLowerCase()
-
+        const nationality = player.person.nationality.toLowerCase()
         const isShort = search.length <= 2
+        const is3Long = search.length === 3
         const isNumber = !isNaN(parseInt(search))
         const matchesPosition = position.indexOf(search) > -1
         const matchesName = name.indexOf(search) > -1
         const matchesNumber = player.jerseyNumber === search
+        const matchesNationality = nationality === search
         // const matchesTeam = teamSearchResults.length > 0 ? !!teamSearchResults.find(team => team.id === player.teamId) : false
 
-        return isShort ? (isNumber ? matchesNumber : matchesPosition) : matchesName
+        return isShort ? (isNumber ? matchesNumber : matchesPosition) : is3Long ? matchesNationality : matchesName
     }
     const playerSearchResults = debouncedSearchStr.length > 0 ? allPlayers.filter(playerSearchCondition) : []
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        searchRef.current.blur()
+    }
 
     return (
         <PageWrapper>
@@ -86,8 +94,9 @@ const NHLgram = ({ user }) => {
 
             <div className="nhl">
 
-                <div className="search">
+                <form className="search" onSubmit={handleSubmit}>
                     <input
+                        ref={searchRef}
                         type="text"
                         value={searchStr}
                         onChange={e => setSearchStr(e.target.value)}
@@ -102,7 +111,7 @@ const NHLgram = ({ user }) => {
                             </svg>
                         </button>
                     )}
-                </div>
+                </form>
 
                 {teamSearchResults.map(team => (
                     <div key={team.id} className="team" onClick={() => setActiveTeam(team.id)}>
@@ -118,21 +127,10 @@ const NHLgram = ({ user }) => {
                         </div>
                     </div>
                 ))}
-                {playerSearchResults.map(player => (
-                    <div key={player.person.id} className="player" onClick={() => setActivePlayer(player.person.id)}>
-                        <div className="avatar">
-                            <img className="photo" src={`https://nhl.bamcontent.com/images/headshots/current/168x168/${player.person.id}.jpg`} />
-                            <img className="badge" src={`https://www-league.nhlstatic.com/nhl.com/builds/site-core/a2d98717aeb7d8dfe2694701e13bd3922887b1f2_1542226749/images/logos/team/current/team-${player.teamId}-dark.svg`} />
-                        </div>
-                        <div className="info">
-                            <div className="top">
-                                <span className="name">{player.person.fullName}</span>
-                                <span className="number">#{player.jerseyNumber}</span>
-                            </div>
-                            <div className="position">{player.position.name}</div>
-                        </div>
-                    </div>
-                ))}
+
+                <ul>
+                    {playerSearchResults.map(player => <Player key={player.person.id} player={player} onClick={setActivePlayer} />)}
+                </ul>
 
                 <Modal
                     visible={activeTeam !== null}
@@ -140,7 +138,10 @@ const NHLgram = ({ user }) => {
                     classNames={{modal: 'nhl no-padding', overlay: 'no-padding'}}
                     noPadding
                 >
-                    <TeamFeed teamId={activeTeam}/>
+                    <TeamFeed
+                        teamId={activeTeam}
+                        onPlayerClick={setActivePlayer}
+                    />
                 </Modal>
 
                 <Modal

@@ -9,7 +9,7 @@ export const getStats = (type, stats) => {
     return (selected && selected.splits[0]) ? selected.splits[0].stat : null
 }
 
-const TeamFeed = ({ teamId }) => {
+const TeamFeed = ({ teamId, onPlayerClick }) => {
 
     const [ team, setTeam ] = useState(null)
     const [ stats, setStats ] = useState([])
@@ -89,7 +89,13 @@ const TeamFeed = ({ teamId }) => {
                 </div>
             )}
 
-            <Roster roster={team.roster.roster} />
+            {seasonStats && (
+                <Roster
+                    roster={team.roster.roster}
+                    gamesPlayed={seasonStats.gamesPlayed}
+                    onClick={onPlayerClick}
+                />
+            )}
 
             {(seasonStats || rankingStats) && (
                 <div className="team-standings">
